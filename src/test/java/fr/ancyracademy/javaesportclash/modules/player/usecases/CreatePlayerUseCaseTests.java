@@ -1,10 +1,8 @@
-package fr.ancyracademy.modules.player.usecases;
+package fr.ancyracademy.javaesportclash.modules.player.usecases;
 
 import fr.ancyracademy.javaesportclash.modules.player.adapters.ram.InMemoryPlayerRepository;
 import fr.ancyracademy.javaesportclash.modules.player.model.Player;
 import fr.ancyracademy.javaesportclash.modules.player.model.Role;
-import fr.ancyracademy.javaesportclash.modules.player.usecases.CreatePlayerInput;
-import fr.ancyracademy.javaesportclash.modules.player.usecases.CreatePlayerUseCase;
 import fr.ancyracademy.javaesportclash.shared.IdResponse;
 import fr.ancyracademy.javaesportclash.shared.id.FixedIdProvider;
 import org.junit.jupiter.api.BeforeEach;

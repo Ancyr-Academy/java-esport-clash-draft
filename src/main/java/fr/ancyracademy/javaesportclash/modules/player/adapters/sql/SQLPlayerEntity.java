@@ -1,12 +1,14 @@
-package fr.ancyracademy.javaesportclash.modules.player.adapters.mongo;
+package fr.ancyracademy.javaesportclash.modules.player.adapters.sql;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import java.util.UUID;
 
-@Document("players")
-public class MongoPlayerDocument {
+@Entity
+@Table(name = "players")
+public class SQLPlayerEntity {
   @Id
   private UUID id;
 
@@ -14,10 +16,10 @@ public class MongoPlayerDocument {
 
   private String mainRole;
 
-  public MongoPlayerDocument() {
+  public SQLPlayerEntity() {
   }
 
-  public MongoPlayerDocument(UUID id, String name, String mainRole) {
+  public SQLPlayerEntity(UUID id, String name, String mainRole) {
     this.id = id;
     this.name = name;
     this.mainRole = mainRole;

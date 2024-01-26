@@ -1,4 +1,4 @@
-package fr.ancyracademy.javaesportclash.app;
+package fr.ancyracademy.javaesportclash;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
