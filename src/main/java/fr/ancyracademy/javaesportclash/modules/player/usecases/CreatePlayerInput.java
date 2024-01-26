@@ -1,10 +1,12 @@
 package fr.ancyracademy.javaesportclash.modules.player.usecases;
 
+import fr.ancyracademy.javaesportclash.modules.player.model.Role;
+
 public class CreatePlayerInput {
   private final String name;
-  private final String mainRole;
+  private final Role mainRole;
 
-  public CreatePlayerInput(String name, String role) {
+  public CreatePlayerInput(String name, Role role) {
     this.name = name;
     this.mainRole = role;
   }
@@ -13,7 +15,7 @@ public class CreatePlayerInput {
     return name;
   }
 
-  public String getMainRole() {
+  public Role getMainRole() {
     return mainRole;
   }
 }

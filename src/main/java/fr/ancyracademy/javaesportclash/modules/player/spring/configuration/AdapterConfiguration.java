@@ -1,4 +1,4 @@
-package fr.ancyracademy.javaesportclash.modules.player.spring;
+package fr.ancyracademy.javaesportclash.modules.player.spring.configuration;
 
 
 import fr.ancyracademy.javaesportclash.modules.player.adapters.sql.SQLPlayerDataAccessor;

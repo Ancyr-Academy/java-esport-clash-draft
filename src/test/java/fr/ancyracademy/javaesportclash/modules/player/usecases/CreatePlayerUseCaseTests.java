@@ -31,7 +31,7 @@ public class CreatePlayerUseCaseTests {
 
   @Nested
   class HappyPath {
-    CreatePlayerInput input = new CreatePlayerInput("Faker", "MID");
+    CreatePlayerInput input = new CreatePlayerInput("Faker", Role.MID);
 
     @Test
     void shouldReturnId() {

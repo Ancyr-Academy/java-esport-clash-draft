@@ -1,7 +1,6 @@
 package fr.ancyracademy.javaesportclash.modules.player.usecases;
 
 import fr.ancyracademy.javaesportclash.modules.player.model.Player;
-import fr.ancyracademy.javaesportclash.modules.player.model.Role;
 import fr.ancyracademy.javaesportclash.modules.player.ports.PlayerRepository;
 import fr.ancyracademy.javaesportclash.shared.IdResponse;
 import fr.ancyracademy.javaesportclash.shared.UseCase;
@@ -19,7 +18,7 @@ public class CreatePlayerUseCase implements UseCase<CreatePlayerInput, IdRespons
 
   @Override
   public IdResponse execute(CreatePlayerInput request) {
-    Player player = new Player(idProvider.generate(), request.getName(), Role.fromString(request.getMainRole()));
+    Player player = new Player(idProvider.generate(), request.getName(), request.getMainRole());
     playerRepository.save(player);
 
     return new IdResponse(player.getId());
