@@ -1,4 +1,4 @@
-package fr.ancyracademy.javaesportclash.spring;
+package fr.ancyracademy.javaesportclash.spring.configurations;
 
 import fr.ancyracademy.javaesportclash.shared.id.IdProvider;
 import fr.ancyracademy.javaesportclash.shared.id.RandomIdProvider;
