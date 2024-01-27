@@ -26,11 +26,28 @@ public class Match {
     this.second = second;
   }
 
+  public boolean includesTeam(Team team) {
+    return first.getId().equals(team.getId()) || second.getId().equals(team.getId());
+  }
+
   public Team getFirst() {
     return first;
   }
 
   public Team getSecond() {
     return second;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Match match = (Match) o;
+    return Objects.equals(first, match.first) && Objects.equals(second, match.second);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(first, second);
   }
 }
