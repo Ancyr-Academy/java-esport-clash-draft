@@ -10,6 +10,10 @@ public class Match {
   private final Team second;
 
   public Match(Team first, Team second) {
+    if (first == null || second == null) {
+      throw new IllegalArgumentException("Teams must be provided");
+    }
+
     if (!first.isComplete() || !second.isComplete()) {
       throw new IllegalStateException("Teams must be complete to be part of a match");
     }

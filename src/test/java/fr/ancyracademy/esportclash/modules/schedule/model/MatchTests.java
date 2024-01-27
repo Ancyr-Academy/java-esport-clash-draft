@@ -2,8 +2,11 @@ package fr.ancyracademy.esportclash.modules.schedule.model;
 
 import fr.ancyracademy.esportclash.modules.player.model.Role;
 import fr.ancyracademy.esportclash.modules.team.model.Team;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MatchTests {
   private Team createSKT() {
@@ -36,5 +39,37 @@ public class MatchTests {
     return team;
   }
 
+  @Test
+  public void whenFirstTeamIsNull_shouldThrow() {
+    assertThrows(IllegalArgumentException.class, () -> new Match(null, createFNC()));
+  }
 
+  @Test
+  public void whenSecondTeamIsNull_shouldThrow() {
+    assertThrows(IllegalArgumentException.class, () -> new Match(createSKT(), null));
+  }
+
+  @Test
+  public void whenOpposingSameTeam_shouldThrow() {
+    var skt = createSKT();
+    assertThrows(IllegalStateException.class, () -> new Match(skt, skt));
+  }
+
+  @Test
+  public void whenFirstTeamIsIncomplete_shouldThrow() {
+    var skt = createSKT();
+    var fnc = createFNC();
+    skt.leave("skt-supp");
+
+    assertThrows(IllegalStateException.class, () -> new Match(skt, fnc));
+  }
+
+  @Test
+  public void whenSecondTeamIsIncomplete_shouldThrow() {
+    var skt = createSKT();
+    var fnc = createFNC();
+    fnc.leave("fnc-supp");
+
+    assertThrows(IllegalStateException.class, () -> new Match(skt, fnc));
+  }
 }
