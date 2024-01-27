@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @AutoConfigureMockMvc
 @Import(PostgreSQLDbConfiguration.class)
 public class GetPlayerByIdE2ETests {
-  Player faker = new Player(UUID.randomUUID(), "Faker", Role.MID);
+  Player faker = new Player("faker", "Faker", Role.MID);
 
   @Autowired
   private MockMvc mockMvc;

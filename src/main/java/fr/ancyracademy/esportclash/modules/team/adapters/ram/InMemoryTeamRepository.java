@@ -6,13 +6,12 @@ import fr.ancyracademy.esportclash.modules.team.ports.TeamRepository;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 public class InMemoryTeamRepository implements TeamRepository {
-  private final Map<UUID, Team> teams = new HashMap<>();
+  private final Map<String, Team> teams = new HashMap<>();
 
   @Override
-  public Optional<Team> findById(UUID id) {
+  public Optional<Team> findById(String id) {
     return teams.values().stream()
         .filter(team -> team.getId().equals(id))
         .findFirst()
@@ -20,7 +19,7 @@ public class InMemoryTeamRepository implements TeamRepository {
   }
 
   @Override
-  public Optional<Team> findByPlayerId(UUID playerId) {
+  public Optional<Team> findByPlayerId(String playerId) {
     return teams.values().stream()
         .filter(team -> team.hasPlayer(playerId))
         .findFirst()

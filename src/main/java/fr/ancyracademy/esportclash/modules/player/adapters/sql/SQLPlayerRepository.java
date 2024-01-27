@@ -5,7 +5,6 @@ import fr.ancyracademy.esportclash.modules.player.model.Role;
 import fr.ancyracademy.esportclash.modules.player.ports.PlayerRepository;
 
 import java.util.Optional;
-import java.util.UUID;
 
 public class SQLPlayerRepository implements PlayerRepository {
   private final SQLPlayerDataAccessor dataAccessor;
@@ -22,7 +21,7 @@ public class SQLPlayerRepository implements PlayerRepository {
   }
 
   @Override
-  public Optional<Player> findById(UUID id) {
+  public Optional<Player> findById(String id) {
     Optional<SQLPlayerEntity> document = dataAccessor.findById(id);
     return document.map(mapper::toDomainModel);
   }

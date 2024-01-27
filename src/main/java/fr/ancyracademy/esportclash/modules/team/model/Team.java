@@ -4,16 +4,15 @@ import fr.ancyracademy.esportclash.modules.player.model.Role;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class Team {
-  private final UUID id;
+  private final String id;
 
   private final String name;
 
   private final List<TeamMember> members;
 
-  public Team(UUID id, String name, List<TeamMember> members) {
+  public Team(String id, String name, List<TeamMember> members) {
     this.id = id;
     this.name = name;
     this.members = members;
@@ -25,7 +24,7 @@ public class Team {
     this.members = new ArrayList<>(other.members.stream().map(TeamMember::new).toList());
   }
 
-  public void join(UUID playerId, Role role) {
+  public void join(String playerId, Role role) {
     if (members.stream().anyMatch(member -> member.getId().equals(playerId))) {
       throw new IllegalArgumentException("Player already in team");
     }
@@ -37,7 +36,7 @@ public class Team {
     members.add(new TeamMember(playerId, role));
   }
 
-  public void leave(UUID playerId) {
+  public void leave(String playerId) {
     if (members.stream().noneMatch(member -> member.getId().equals(playerId))) {
       throw new IllegalArgumentException("Player not in team");
     }
@@ -49,11 +48,11 @@ public class Team {
     return members.size() == 5;
   }
 
-  public boolean hasPlayer(UUID playerId) {
+  public boolean hasPlayer(String playerId) {
     return members.stream().anyMatch(member -> member.getId().equals(playerId));
   }
 
-  public UUID getId() {
+  public String getId() {
     return id;
   }
 
@@ -66,11 +65,11 @@ public class Team {
   }
 
   public static class TeamMember {
-    private final UUID id;
+    private final String id;
 
     private Role role;
 
-    public TeamMember(UUID id, Role role) {
+    public TeamMember(String id, Role role) {
       this.id = id;
       this.role = role;
     }
@@ -88,7 +87,7 @@ public class Team {
       return role;
     }
 
-    public UUID getId() {
+    public String getId() {
       return id;
     }
   }

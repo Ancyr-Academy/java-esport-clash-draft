@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 
-import java.util.UUID;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -27,7 +25,7 @@ public class SQLPlayerRepositoryTests {
 
   @Test
   void shouldSavePlayer() {
-    var seed = new Player(UUID.randomUUID(), "Faker", Role.MID);
+    var seed = new Player("faker", "Faker", Role.MID);
     repository.save(seed);
 
     var player = repository.findById(seed.getId());
@@ -39,7 +37,7 @@ public class SQLPlayerRepositoryTests {
 
   @Test
   void shouldDeletePlayer() {
-    var seed = new Player(UUID.randomUUID(), "Faker", Role.MID);
+    var seed = new Player("faker", "Faker", Role.MID);
     repository.save(seed);
     repository.delete(seed);
 

@@ -1,16 +1,14 @@
 package fr.ancyracademy.esportclash.modules.player.usecases;
 
-import java.util.UUID;
-
 public class GetPlayerByIdInput {
-  private final UUID id;
+  private final String id;
 
 
-  public GetPlayerByIdInput(UUID id) {
+  public GetPlayerByIdInput(String id) {
     this.id = id;
   }
 
-  public UUID getId() {
+  public String getId() {
     return id;
   }
 }

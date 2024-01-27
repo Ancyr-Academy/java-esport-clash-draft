@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,11 +19,11 @@ public class AddPlayerToTeamUseCaseTests {
 
   InMemoryPlayerRepository playerRepository = new InMemoryPlayerRepository();
 
-  Player faker = new Player(UUID.randomUUID(), "Faker", Role.MID);
+  Player faker = new Player("faker", "Faker", Role.MID);
 
-  Team skt = new Team(UUID.randomUUID(), "SKT", new ArrayList<>());
+  Team skt = new Team("skt", "SKT", new ArrayList<>());
 
-  Team damwon = new Team(UUID.randomUUID(), "Damwon", new ArrayList<>());
+  Team damwon = new Team("damwon", "Damwon", new ArrayList<>());
 
   AddPlayerToTeamUseCase createUseCase() {
     return new AddPlayerToTeamUseCase(playerRepository, teamRepository);
@@ -61,7 +60,7 @@ public class AddPlayerToTeamUseCaseTests {
   @Nested
   class Scenario_TheTeamDoesNotExists {
     AddPlayerToTeamInput input = new AddPlayerToTeamInput(
-        UUID.fromString("00000000-0000-0000-0000-000000000000"),
+        "random-id",
         faker.getId(),
         Role.MID
     );
@@ -78,7 +77,7 @@ public class AddPlayerToTeamUseCaseTests {
   class Scenario_ThePlayerDoesNotExists {
     AddPlayerToTeamInput input = new AddPlayerToTeamInput(
         skt.getId(),
-        UUID.fromString("00000000-0000-0000-0000-000000000000"),
+        "random-id",
         Role.MID
     );
 

@@ -3,10 +3,9 @@ package fr.ancyracademy.esportclash.modules.player.ports;
 import fr.ancyracademy.esportclash.modules.player.model.Player;
 
 import java.util.Optional;
-import java.util.UUID;
 
 public interface PlayerRepository {
-  Optional<Player> findById(UUID id);
+  Optional<Player> findById(String id);
 
   void save(Player player);
 

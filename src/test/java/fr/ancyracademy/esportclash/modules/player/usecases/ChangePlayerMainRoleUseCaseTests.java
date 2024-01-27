@@ -8,8 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -17,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class ChangePlayerMainRoleUseCaseTests {
   InMemoryPlayerRepository playerRepository = new InMemoryPlayerRepository();
 
-  Player faker = new Player(UUID.randomUUID(), "Faker", Role.MID);
+  Player faker = new Player("faker", "Faker", Role.MID);
 
   @BeforeEach
   void setUp() {
@@ -46,7 +44,7 @@ public class ChangePlayerMainRoleUseCaseTests {
   @Nested
   class Scenario_TheUserIsNotFound {
     ChangePlayerMainRoleInput input = new ChangePlayerMainRoleInput(
-        UUID.fromString("00000000-0000-0000-0000-000000000000"),
+        "top",
         Role.TOP
     );
 

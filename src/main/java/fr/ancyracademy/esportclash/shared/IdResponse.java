@@ -1,15 +1,13 @@
 package fr.ancyracademy.esportclash.shared;
 
-import java.util.UUID;
-
 public class IdResponse {
-  private final UUID id;
+  private final String id;
 
-  public IdResponse(UUID id) {
+  public IdResponse(String id) {
     this.id = id;
   }
 
-  public UUID getId() {
+  public String getId() {
     return id;
   }
 }

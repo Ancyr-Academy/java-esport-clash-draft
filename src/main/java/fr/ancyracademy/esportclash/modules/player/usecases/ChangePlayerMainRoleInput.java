@@ -2,20 +2,18 @@ package fr.ancyracademy.esportclash.modules.player.usecases;
 
 import fr.ancyracademy.esportclash.modules.player.model.Role;
 
-import java.util.UUID;
-
 public class ChangePlayerMainRoleInput {
 
-  private final UUID id;
+  private final String id;
 
   private final Role mainRole;
 
-  public ChangePlayerMainRoleInput(UUID id, Role mainRole) {
+  public ChangePlayerMainRoleInput(String id, Role mainRole) {
     this.id = id;
     this.mainRole = mainRole;
   }
 
-  public UUID getId() {
+  public String getId() {
     return id;
   }
 

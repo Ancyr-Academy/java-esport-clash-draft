@@ -4,13 +4,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-import java.util.UUID;
-
 @Entity
 @Table(name = "players")
 public class SQLPlayerEntity {
   @Id
-  private UUID id;
+  private String id;
 
   private String name;
 
@@ -19,17 +17,17 @@ public class SQLPlayerEntity {
   public SQLPlayerEntity() {
   }
 
-  public SQLPlayerEntity(UUID id, String name, String mainRole) {
+  public SQLPlayerEntity(String id, String name, String mainRole) {
     this.id = id;
     this.name = name;
     this.mainRole = mainRole;
   }
 
-  public UUID getId() {
+  public String getId() {
     return id;
   }
 
-  public void setId(UUID id) {
+  public void setId(String id) {
     this.id = id;
   }
 

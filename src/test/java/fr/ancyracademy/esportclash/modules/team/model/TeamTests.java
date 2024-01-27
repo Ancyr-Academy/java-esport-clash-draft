@@ -4,14 +4,13 @@ import fr.ancyracademy.esportclash.modules.player.model.Role;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TeamTests {
   Team createTeamFixture() {
     return new Team(
-        UUID.randomUUID(),
+        "skt",
         "SKT T1",
         new ArrayList<>());
   }
@@ -20,10 +19,10 @@ public class TeamTests {
   void whenTeamIsNotFull_shouldBeNotComplete() {
     var team = createTeamFixture();
 
-    team.join(UUID.randomUUID(), Role.TOP);
-    team.join(UUID.randomUUID(), Role.JUNGLE);
-    team.join(UUID.randomUUID(), Role.MID);
-    team.join(UUID.randomUUID(), Role.BOTTOM);
+    team.join("top", Role.TOP);
+    team.join("jgl", Role.JUNGLE);
+    team.join("mid", Role.MID);
+    team.join("bot", Role.BOTTOM);
 
     assertFalse(team.isComplete());
   }
@@ -32,11 +31,11 @@ public class TeamTests {
   void whenTeamIsFull_shouldBeComplete() {
     var team = createTeamFixture();
 
-    team.join(UUID.randomUUID(), Role.TOP);
-    team.join(UUID.randomUUID(), Role.JUNGLE);
-    team.join(UUID.randomUUID(), Role.MID);
-    team.join(UUID.randomUUID(), Role.BOTTOM);
-    team.join(UUID.randomUUID(), Role.SUPPORT);
+    team.join("top", Role.TOP);
+    team.join("jgl", Role.JUNGLE);
+    team.join("mid", Role.MID);
+    team.join("bot", Role.BOTTOM);
+    team.join("supp", Role.SUPPORT);
 
     assertTrue(team.isComplete());
   }
@@ -45,12 +44,12 @@ public class TeamTests {
   void whenTeamIsFullButLacksRole_shouldRefuseToAddTwiceTheSameRole() {
     var team = createTeamFixture();
 
-    team.join(UUID.randomUUID(), Role.TOP);
-    team.join(UUID.randomUUID(), Role.JUNGLE);
-    team.join(UUID.randomUUID(), Role.MID);
-    team.join(UUID.randomUUID(), Role.BOTTOM);
+    team.join("top", Role.TOP);
+    team.join("jgl", Role.JUNGLE);
+    team.join("mid", Role.MID);
+    team.join("bot", Role.BOTTOM);
 
-    Exception exception = assertThrows(IllegalArgumentException.class, () -> team.join(UUID.randomUUID(), Role.BOTTOM));
+    Exception exception = assertThrows(IllegalArgumentException.class, () -> team.join("bot-2", Role.BOTTOM));
     assertEquals("Role already taken", exception.getMessage());
   }
 
@@ -58,15 +57,15 @@ public class TeamTests {
   void whenTeamIsFullButLacksRole_shouldRefuseToAddTwiceTheSameUser() {
     var team = createTeamFixture();
 
-    team.join(UUID.fromString("3605348c-6a30-48cd-ba16-3d739abb5880"), Role.TOP);
-    team.join(UUID.fromString("3605348c-6a30-48cd-ba16-3d739abb5881"), Role.JUNGLE);
-    team.join(UUID.fromString("3605348c-6a30-48cd-ba16-3d739abb5882"), Role.MID);
-    team.join(UUID.fromString("3605348c-6a30-48cd-ba16-3d739abb5883"), Role.BOTTOM);
+    team.join("top", Role.TOP);
+    team.join("jgl", Role.JUNGLE);
+    team.join("mid", Role.MID);
+    team.join("bot", Role.BOTTOM);
 
 
     Exception exception = assertThrows(
         IllegalArgumentException.class,
-        () -> team.join(UUID.fromString("3605348c-6a30-48cd-ba16-3d739abb5883"), Role.BOTTOM)
+        () -> team.join("bot", Role.BOTTOM)
     );
 
     assertEquals("Player already in team", exception.getMessage());
@@ -76,7 +75,7 @@ public class TeamTests {
   void whenThePlayerIsInTheTeam_shouldLeaveTheTeam() {
     var team = createTeamFixture();
 
-    var playerId = UUID.randomUUID();
+    var playerId = "top-id";
     team.join(playerId, Role.TOP);
     team.leave(playerId);
 
@@ -87,7 +86,7 @@ public class TeamTests {
   void whenThePlayerIsNotInTheTeam_shouldThrowAnError() {
     var team = createTeamFixture();
 
-    var playerId = UUID.randomUUID();
+    var playerId = "top-id";
     team.join(playerId, Role.TOP);
     team.leave(playerId);
 

@@ -13,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
-
 @RestController
 @RequestMapping("/players")
 public class PlayerController {
@@ -39,7 +37,7 @@ public class PlayerController {
   public ResponseEntity<PlayerViewModel> getPlayer(
       @PathVariable("id") String id
   ) {
-    var response = getPlayerByIdUseCase.execute(new GetPlayerByIdInput(UUID.fromString(id)));
+    var response = getPlayerByIdUseCase.execute(new GetPlayerByIdInput(id));
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
@@ -54,7 +52,7 @@ public class PlayerController {
   public ResponseEntity<Void> changePlayerMainRole(@Valid @RequestBody ChangePlayerMainRoleDTO input, @PathVariable("id") String id) {
 
 
-    changePlayerMainRoleUseCase.execute(new ChangePlayerMainRoleInput(UUID.fromString(id), Role.fromString(input.getMainRole())));
+    changePlayerMainRoleUseCase.execute(new ChangePlayerMainRoleInput(id, Role.fromString(input.getMainRole())));
     return new ResponseEntity<>(null, HttpStatus.OK);
   }
 }

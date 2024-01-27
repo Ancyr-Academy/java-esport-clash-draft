@@ -1,13 +1,11 @@
 package fr.ancyracademy.esportclash.modules.player.model;
 
-import java.util.UUID;
-
 public class Player {
-  private UUID id;
+  private String id;
   private String name;
   private Role mainRole;
 
-  public Player(UUID id, String name, Role mainRole) {
+  public Player(String id, String name, Role mainRole) {
     this.id = id;
     this.name = name;
     this.mainRole = mainRole;
@@ -19,11 +17,11 @@ public class Player {
     this.mainRole = other.mainRole;
   }
 
-  public UUID getId() {
+  public String getId() {
     return id;
   }
 
-  public void setId(UUID id) {
+  public void setId(String id) {
     this.id = id;
   }
 

@@ -1,12 +1,10 @@
 package fr.ancyracademy.esportclash.shared.id;
 
-import java.util.UUID;
-
 public class FixedIdProvider implements IdProvider {
-  static final UUID id = UUID.fromString("00000000-0000-0000-0000-000000000000");
+  static final String id = "fixed-id";
 
   @Override
-  public UUID generate() {
+  public String generate() {
     return id;
   }
 }

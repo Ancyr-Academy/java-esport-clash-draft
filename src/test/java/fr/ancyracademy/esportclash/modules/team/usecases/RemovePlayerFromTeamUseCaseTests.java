@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,9 +31,9 @@ public class RemovePlayerFromTeamUseCaseTests {
 
   @BeforeEach
   void setUp() {
-    faker = new Player(UUID.randomUUID(), "Faker", Role.MID);
-    teddy = new Player(UUID.randomUUID(), "Teddy", Role.BOTTOM);
-    skt = new Team(UUID.randomUUID(), "SKT", new ArrayList<>());
+    faker = new Player("faker", "Faker", Role.MID);
+    teddy = new Player("gumayusi", "Gumayusi", Role.BOTTOM);
+    skt = new Team("skt", "SKT", new ArrayList<>());
     skt.join(faker.getId(), Role.MID);
 
     teamRepository.clear();
@@ -67,9 +66,7 @@ public class RemovePlayerFromTeamUseCaseTests {
   @Nested
   class Scenario_PlayerDoesNotExist {
     RemovePlayerFromTeamInput createInput() {
-      return new RemovePlayerFromTeamInput(
-          UUID.randomUUID()
-      );
+      return new RemovePlayerFromTeamInput("random-id");
     }
 
     @Test

@@ -6,13 +6,12 @@ import fr.ancyracademy.esportclash.modules.player.ports.PlayerRepository;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 public class InMemoryPlayerRepository implements PlayerRepository {
-  private final Map<UUID, Player> players = new HashMap<>();
+  private final Map<String, Player> players = new HashMap<>();
 
   @Override
-  public Optional<Player> findById(UUID id) {
+  public Optional<Player> findById(String id) {
     return players.values().stream()
         .filter(player -> player.getId().equals(id))
         .findFirst()

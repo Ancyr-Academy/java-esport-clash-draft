@@ -7,14 +7,13 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DeleteTeamUseCaseTests {
   InMemoryTeamRepository teamRepository = new InMemoryTeamRepository();
 
-  Team team = new Team(UUID.randomUUID(), "SKT", new ArrayList<>());
+  Team team = new Team("skt", "SKT", new ArrayList<>());
 
   @BeforeEach
   void setUp() {
