@@ -1,4 +1,4 @@
-package fr.ancyracademy.esportclash.modules.team.usescases;
+package fr.ancyracademy.esportclash.modules.team.usecases;
 
 import fr.ancyracademy.esportclash.modules.player.model.Player;
 import fr.ancyracademy.esportclash.modules.player.ports.PlayerRepository;
@@ -9,25 +9,25 @@ import fr.ancyracademy.esportclash.shared.exceptions.NotFoundException;
 
 import java.util.Optional;
 
-public class AddPlayerUseCase implements UseCase<AddPlayerInput, Void> {
+public class AddPlayerToTeamUseCase implements UseCase<AddPlayerToTeamInput, Void> {
   private final PlayerRepository playerRepository;
   private final TeamRepository teamRepository;
 
-  public AddPlayerUseCase(PlayerRepository playerRepository, TeamRepository teamRepository) {
+  public AddPlayerToTeamUseCase(PlayerRepository playerRepository, TeamRepository teamRepository) {
     this.playerRepository = playerRepository;
     this.teamRepository = teamRepository;
   }
 
   @Override
-  public Void execute(AddPlayerInput input) {
-    Player player = this.playerRepository.findById(input.getPlayerId()).orElseThrow(
+  public Void execute(AddPlayerToTeamInput input) {
+    Player player = this.playerRepository.findById(input.playerId()).orElseThrow(
         () -> new NotFoundException("Player not found")
     );
     Optional<Team> playerCurrentTeam = this.teamRepository.findByPlayerId(player.getId());
 
     if (playerCurrentTeam.isPresent()) {
       var team = playerCurrentTeam.get();
-      if (team.getId().equals(input.getTeamId())) {
+      if (team.getId().equals(input.teamId())) {
         // The user is already in the team, we can return early
         return null;
       }
@@ -35,11 +35,11 @@ public class AddPlayerUseCase implements UseCase<AddPlayerInput, Void> {
       throw new RuntimeException("Player already in another team");
     }
 
-    Team team = this.teamRepository.findById(input.getTeamId()).orElseThrow(
+    Team team = this.teamRepository.findById(input.teamId()).orElseThrow(
         () -> new NotFoundException("Team not found")
     );
 
-    team.join(player.getId(), input.getRole());
+    team.join(player.getId(), input.role());
     this.teamRepository.save(team);
 
     return null;

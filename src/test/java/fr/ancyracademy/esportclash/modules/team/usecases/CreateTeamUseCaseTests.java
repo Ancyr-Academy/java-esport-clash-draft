@@ -1,8 +1,6 @@
 package fr.ancyracademy.esportclash.modules.team.usecases;
 
 import fr.ancyracademy.esportclash.modules.team.adapters.ram.InMemoryTeamRepository;
-import fr.ancyracademy.esportclash.modules.team.usescases.CreateTeamInput;
-import fr.ancyracademy.esportclash.modules.team.usescases.CreateTeamUseCase;
 import fr.ancyracademy.esportclash.shared.id.FixedIdProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -35,7 +33,7 @@ public class CreateTeamUseCaseTests {
 
       assertEquals(idProvider.generate(), response.getId());
     }
-    
+
     @Test
     void shouldCreateTeam() {
       var useCase = createUseCase();

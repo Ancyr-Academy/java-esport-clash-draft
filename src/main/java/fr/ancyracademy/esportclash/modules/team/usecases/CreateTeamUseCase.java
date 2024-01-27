@@ -1,4 +1,4 @@
-package fr.ancyracademy.esportclash.modules.team.usescases;
+package fr.ancyracademy.esportclash.modules.team.usecases;
 
 import fr.ancyracademy.esportclash.modules.team.model.Team;
 import fr.ancyracademy.esportclash.modules.team.ports.TeamRepository;
@@ -22,7 +22,7 @@ public class CreateTeamUseCase implements UseCase<CreateTeamInput, IdResponse> {
   public IdResponse execute(CreateTeamInput input) {
     Team team = new Team(
         this.idProvider.generate(),
-        input.getName(),
+        input.name(),
         new ArrayList<>()
     );
 

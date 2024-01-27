@@ -2,8 +2,6 @@ package fr.ancyracademy.esportclash.modules.team.usecases;
 
 import fr.ancyracademy.esportclash.modules.team.adapters.ram.InMemoryTeamRepository;
 import fr.ancyracademy.esportclash.modules.team.model.Team;
-import fr.ancyracademy.esportclash.modules.team.usescases.DeleteTeamInput;
-import fr.ancyracademy.esportclash.modules.team.usescases.DeleteTeamUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -37,7 +35,7 @@ public class DeleteTeamUseCaseTests {
       var useCase = createUseCase();
       useCase.execute(input);
 
-      var team = teamRepository.findById(input.getId());
+      var team = teamRepository.findById(input.id());
       assertTrue(team.isEmpty());
     }
   }

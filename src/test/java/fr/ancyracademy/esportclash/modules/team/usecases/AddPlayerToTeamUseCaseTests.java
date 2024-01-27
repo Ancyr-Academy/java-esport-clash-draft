@@ -5,8 +5,6 @@ import fr.ancyracademy.esportclash.modules.player.model.Player;
 import fr.ancyracademy.esportclash.modules.player.model.Role;
 import fr.ancyracademy.esportclash.modules.team.adapters.ram.InMemoryTeamRepository;
 import fr.ancyracademy.esportclash.modules.team.model.Team;
-import fr.ancyracademy.esportclash.modules.team.usescases.AddPlayerInput;
-import fr.ancyracademy.esportclash.modules.team.usescases.AddPlayerUseCase;
 import fr.ancyracademy.esportclash.shared.exceptions.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -17,7 +15,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class AddPlayerUseCaseTests {
+public class AddPlayerToTeamUseCaseTests {
   InMemoryTeamRepository teamRepository = new InMemoryTeamRepository();
 
   InMemoryPlayerRepository playerRepository = new InMemoryPlayerRepository();
@@ -28,8 +26,8 @@ public class AddPlayerUseCaseTests {
 
   Team damwon = new Team(UUID.randomUUID(), "Damwon", new ArrayList<>());
 
-  AddPlayerUseCase createUseCase() {
-    return new AddPlayerUseCase(playerRepository, teamRepository);
+  AddPlayerToTeamUseCase createUseCase() {
+    return new AddPlayerToTeamUseCase(playerRepository, teamRepository);
   }
 
   @BeforeEach
@@ -44,7 +42,7 @@ public class AddPlayerUseCaseTests {
 
   @Nested
   class Scenario_HappyPath {
-    AddPlayerInput input = new AddPlayerInput(
+    AddPlayerToTeamInput input = new AddPlayerToTeamInput(
         skt.getId(),
         faker.getId(),
         Role.MID
@@ -55,14 +53,14 @@ public class AddPlayerUseCaseTests {
       var useCase = createUseCase();
       useCase.execute(input);
 
-      var team = teamRepository.findById(input.getTeamId()).get();
-      assertTrue(team.hasPlayer(input.getPlayerId()));
+      var team = teamRepository.findById(input.teamId()).get();
+      assertTrue(team.hasPlayer(input.playerId()));
     }
   }
 
   @Nested
   class Scenario_TheTeamDoesNotExists {
-    AddPlayerInput input = new AddPlayerInput(
+    AddPlayerToTeamInput input = new AddPlayerToTeamInput(
         UUID.fromString("00000000-0000-0000-0000-000000000000"),
         faker.getId(),
         Role.MID
@@ -78,7 +76,7 @@ public class AddPlayerUseCaseTests {
 
   @Nested
   class Scenario_ThePlayerDoesNotExists {
-    AddPlayerInput input = new AddPlayerInput(
+    AddPlayerToTeamInput input = new AddPlayerToTeamInput(
         skt.getId(),
         UUID.fromString("00000000-0000-0000-0000-000000000000"),
         Role.MID
@@ -94,7 +92,7 @@ public class AddPlayerUseCaseTests {
 
   @Nested
   class Scenario_ThePlayerIsAlreadyInAnotherTeam {
-    AddPlayerInput input = new AddPlayerInput(
+    AddPlayerToTeamInput input = new AddPlayerToTeamInput(
         damwon.getId(),
         faker.getId(),
         Role.MID
