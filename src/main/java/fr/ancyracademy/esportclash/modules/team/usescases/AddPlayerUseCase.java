@@ -5,6 +5,7 @@ import fr.ancyracademy.esportclash.modules.player.ports.PlayerRepository;
 import fr.ancyracademy.esportclash.modules.team.model.Team;
 import fr.ancyracademy.esportclash.modules.team.ports.TeamRepository;
 import fr.ancyracademy.esportclash.shared.UseCase;
+import fr.ancyracademy.esportclash.shared.exceptions.NotFoundException;
 
 import java.util.Optional;
 
@@ -19,20 +20,27 @@ public class AddPlayerUseCase implements UseCase<AddPlayerInput, Void> {
 
   @Override
   public Void execute(AddPlayerInput input) {
-    Player player = this.playerRepository.findById(input.getPlayerId()).orElseThrow();
+    Player player = this.playerRepository.findById(input.getPlayerId()).orElseThrow(
+        () -> new NotFoundException("Player not found")
+    );
     Optional<Team> playerCurrentTeam = this.teamRepository.findByPlayerId(player.getId());
 
     if (playerCurrentTeam.isPresent()) {
-      if (playerCurrentTeam.get().getId().equals(input.getTeamId())) {
-        // The action is already done
+      var team = playerCurrentTeam.get();
+      if (team.getId().equals(input.getTeamId())) {
+        // The user is already in the team, we can return early
         return null;
       }
 
       throw new RuntimeException("Player already in another team");
     }
 
-    Team team = this.teamRepository.findById(input.getTeamId()).orElseThrow();
+    Team team = this.teamRepository.findById(input.getTeamId()).orElseThrow(
+        () -> new NotFoundException("Team not found")
+    );
+
     team.join(player.getId(), input.getRole());
+    this.teamRepository.save(team);
 
     return null;
   }

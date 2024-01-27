@@ -2,6 +2,7 @@ package fr.ancyracademy.esportclash.modules.team.model;
 
 import fr.ancyracademy.esportclash.modules.player.model.Role;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,7 +22,7 @@ public class Team {
   public Team(Team other) {
     this.id = other.id;
     this.name = other.name;
-    this.members = other.members.stream().map(TeamMember::new).toList();
+    this.members = new ArrayList<>(other.members.stream().map(TeamMember::new).toList());
   }
 
   public void join(UUID playerId, Role role) {

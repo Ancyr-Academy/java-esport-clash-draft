@@ -5,7 +5,7 @@ import java.util.UUID;
 public class DeleteTeamInput {
   private final UUID id;
 
-  DeleteTeamInput(UUID id) {
+  public DeleteTeamInput(UUID id) {
     this.id = id;
   }
 

@@ -11,7 +11,7 @@ public class AddPlayerInput {
 
   private final Role role;
 
-  AddPlayerInput(UUID teamId, UUID playerId, Role role) {
+  public AddPlayerInput(UUID teamId, UUID playerId, Role role) {
     this.teamId = teamId;
     this.playerId = playerId;
     this.role = role;

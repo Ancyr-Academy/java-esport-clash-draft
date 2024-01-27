@@ -3,7 +3,7 @@ package fr.ancyracademy.esportclash.modules.team.usescases;
 public class CreateTeamInput {
   private final String name;
 
-  CreateTeamInput(String name) {
+  public CreateTeamInput(String name) {
     this.name = name;
   }
 
