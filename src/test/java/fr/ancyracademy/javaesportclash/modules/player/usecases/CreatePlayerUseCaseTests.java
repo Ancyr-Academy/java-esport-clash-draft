@@ -35,16 +35,16 @@ public class CreatePlayerUseCaseTests {
 
     @Test
     void shouldReturnId() {
-      CreatePlayerUseCase createPlayer = createUseCase();
-      IdResponse response = createPlayer.execute(input);
+      var useCase = createUseCase();
+      IdResponse response = useCase.execute(input);
 
       assertEquals(idProvider.generate(), response.getId());
     }
 
     @Test
     void shouldSavePlayer() {
-      CreatePlayerUseCase createPlayer = createUseCase();
-      createPlayer.execute(input);
+      var useCase = createUseCase();
+      useCase.execute(input);
 
       Optional<Player> player = playerRepository.findById(idProvider.generate());
       assertTrue(player.isPresent());

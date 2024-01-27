@@ -13,12 +13,10 @@ public class InMemoryPlayerRepository implements PlayerRepository {
 
   @Override
   public Optional<Player> findById(UUID id) {
-    Player player = players.get(id);
-    if (player == null) {
-      return Optional.empty();
-    }
-
-    return Optional.of(new Player(player));
+    return players.values().stream()
+        .filter(player -> player.getId().equals(id))
+        .findFirst()
+        .map(Player::new);
   }
 
   @Override

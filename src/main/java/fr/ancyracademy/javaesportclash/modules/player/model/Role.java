@@ -17,6 +17,17 @@ public enum Role {
       default -> throw new IllegalArgumentException("Invalid role: " + role);
     };
   }
+
+  @Override
+  public String toString() {
+    return switch (this) {
+      case TOP -> "TOP";
+      case JUNGLE -> "JUNGLE";
+      case MID -> "MID";
+      case BOTTOM -> "BOTTOM";
+      case SUPPORT -> "SUPPORT";
+    };
+  }
 }
 
 
