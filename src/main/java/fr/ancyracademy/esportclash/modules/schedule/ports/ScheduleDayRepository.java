@@ -10,6 +10,8 @@ public interface ScheduleDayRepository {
 
   Optional<ScheduleDay> findByDate(LocalDate date);
 
+  Optional<ScheduleDay> findByMatchId(String matchId);
+
   void save(ScheduleDay scheduleDay);
 
   void delete(ScheduleDay scheduleDay);

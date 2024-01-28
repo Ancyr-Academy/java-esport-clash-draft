@@ -7,8 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ScheduleDayTests {
   private Team createSKT() {
@@ -59,7 +58,7 @@ public class ScheduleDayTests {
   @Test
   public void whenSchedulingAMatch_shouldBeScheduled() {
     var scheduleDay = new ScheduleDay("id", LocalDate.now());
-    var match = new Match(createFNC(), createSKT());
+    var match = new Match("id", createFNC(), createSKT());
 
     scheduleDay.schedule(Moment.MORNING, match);
 
@@ -70,7 +69,7 @@ public class ScheduleDayTests {
   @Test
   public void whenReschedulingAtAnotherMoment_shouldThrow() {
     var scheduleDay = new ScheduleDay("id", LocalDate.now());
-    var match = new Match(createFNC(), createSKT());
+    var match = new Match("id", createFNC(), createSKT());
 
     scheduleDay.schedule(Moment.MORNING, match);
 
@@ -85,7 +84,7 @@ public class ScheduleDayTests {
   @Test
   public void whenReschedulingAtSameMoment_shouldSkip() {
     var scheduleDay = new ScheduleDay("id", LocalDate.now());
-    var match = new Match(createFNC(), createSKT());
+    var match = new Match("id", createFNC(), createSKT());
 
     scheduleDay.schedule(Moment.MORNING, match);
     scheduleDay.schedule(Moment.MORNING, match);
@@ -97,8 +96,8 @@ public class ScheduleDayTests {
   @Test
   public void whenFirstTeamAlreadyPlaysThatDay_shouldThrow() {
     var scheduleDay = new ScheduleDay("id", LocalDate.now());
-    var morningMatch = new Match(createFNC(), createSKT());
-    var afternoonMatch = new Match(createSKT(), createDamwon());
+    var morningMatch = new Match("id", createFNC(), createSKT());
+    var afternoonMatch = new Match("id", createSKT(), createDamwon());
 
     scheduleDay.schedule(Moment.MORNING, morningMatch);
 
@@ -116,8 +115,8 @@ public class ScheduleDayTests {
   @Test
   public void whenSecondTeamAlreadyPlaysThatDay_shouldThrow() {
     var scheduleDay = new ScheduleDay("id", LocalDate.now());
-    var morningMatch = new Match(createFNC(), createSKT());
-    var afternoonMatch = new Match(createDamwon(), createSKT());
+    var morningMatch = new Match("id", createFNC(), createSKT());
+    var afternoonMatch = new Match("id", createDamwon(), createSKT());
 
     scheduleDay.schedule(Moment.MORNING, morningMatch);
 
@@ -130,5 +129,42 @@ public class ScheduleDayTests {
         "Team SKT is already playing that day",
         exception.getMessage()
     );
+  }
+
+  @Test
+  public void whenAddingMatch_shouldContainMatch() {
+    var scheduleDay = new ScheduleDay("id", LocalDate.now());
+    var morningMatch = new Match("morning-match", createFNC(), createSKT());
+
+    scheduleDay.schedule(Moment.MORNING, morningMatch);
+
+    assertTrue(scheduleDay.containsMatch("morning-match"));
+  }
+
+  @Test
+  public void whenCancelingScheduledMatch_shouldCancel() {
+    var scheduleDay = new ScheduleDay("id", LocalDate.now());
+    var morningMatch = new Match("morning-match", createFNC(), createSKT());
+
+    scheduleDay.schedule(Moment.MORNING, morningMatch);
+    scheduleDay.cancel("morning-match");
+
+    assertFalse(scheduleDay.containsMatch("morning-match"));
+  }
+
+  @Test
+  public void whenScheduleIsEmpty_shouldReturnTrue() {
+    var scheduleDay = new ScheduleDay("id", LocalDate.now());
+    assertTrue(scheduleDay.isEmpty());
+  }
+
+  @Test
+  public void whenScheduleIsNotEmpty_shouldReturnFalse() {
+    var scheduleDay = new ScheduleDay("id", LocalDate.now());
+    var morningMatch = new Match("morning-match", createFNC(), createSKT());
+
+    scheduleDay.schedule(Moment.MORNING, morningMatch);
+
+    assertFalse(scheduleDay.isEmpty());
   }
 }

@@ -60,6 +60,10 @@ public class ScheduleDay extends Entity {
     schedule.put(moment, match);
   }
 
+  public void cancel(String matchId) {
+    schedule.remove(matchId);
+  }
+
   public Optional<Match> getMatch(Moment moment) {
     return Optional.of(schedule.get(moment));
   }
@@ -70,6 +74,14 @@ public class ScheduleDay extends Entity {
 
   public String getId() {
     return id;
+  }
+
+  public boolean containsMatch(String matchId) {
+    return schedule.findMatch(matchId).isPresent();
+  }
+
+  public boolean isEmpty() {
+    return schedule.isEmpty();
   }
 
   /**
@@ -113,6 +125,13 @@ public class ScheduleDay extends Entity {
           .map(m -> new Pair<>(m, matches.get(m)));
     }
 
+    public Optional<Pair<Moment, Match>> findMatch(String matchId) {
+      return matches.keySet().stream()
+          .filter(m -> matches.get(m).getId().equals(matchId))
+          .findFirst()
+          .map(m -> new Pair<>(m, matches.get(m)));
+    }
+
     public Match get(Moment moment) {
       return matches.get(moment);
     }
@@ -121,5 +140,12 @@ public class ScheduleDay extends Entity {
       matches.put(moment, match);
     }
 
+    public void remove(String matchId) {
+      matches.values().removeIf(m -> m.getId().equals(matchId));
+    }
+
+    public boolean isEmpty() {
+      return matches.isEmpty();
+    }
   }
 }

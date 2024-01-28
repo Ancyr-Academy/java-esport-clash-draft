@@ -34,7 +34,7 @@ public class OrganizeMatchUseCase implements UseCase<OrganizeMatchInput, IdRespo
         new ScheduleDay(idProvider.generate(), input.getDate())
     );
 
-    var match = new Match(firstTeam, secondTeam);
+    var match = new Match(idProvider.generate(), firstTeam, secondTeam);
 
     scheduleDay.schedule(input.getMoment(), match);
     scheduleDayRepository.save(scheduleDay);

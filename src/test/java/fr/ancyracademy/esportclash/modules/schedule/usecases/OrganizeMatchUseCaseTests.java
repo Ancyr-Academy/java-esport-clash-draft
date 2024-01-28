@@ -47,7 +47,7 @@ public class OrganizeMatchUseCaseTests {
     teamRepository.save(damwon);
     teamRepository.save(g2);
 
-    var match = new Match(damwon, g2);
+    var match = new Match("id", damwon, g2);
     scheduleDay = new ScheduleDay(idProvider.generate(), LocalDate.parse("2024-01-01"));
     scheduleDay.schedule(Moment.AFTERNOON, match);
 
@@ -167,7 +167,7 @@ public class OrganizeMatchUseCaseTests {
       useCase.execute(input);
 
       var scheduleDay = scheduleDayRepository.findByDate(input.getDate()).orElseThrow();
-      
+
       assertMatchIsScheduled(scheduleDay, Moment.MORNING, skt, fnatic);
       assertMatchIsScheduled(scheduleDay, Moment.AFTERNOON, damwon, g2);
     }

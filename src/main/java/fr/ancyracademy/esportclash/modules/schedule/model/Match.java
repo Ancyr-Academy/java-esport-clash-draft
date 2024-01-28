@@ -6,10 +6,11 @@ import java.util.Objects;
 
 public class Match {
   private final Team a;
-
   private final Team b;
+  private String id;
 
-  public Match(Team first, Team second) {
+
+  public Match(String id, Team first, Team second) {
     // Match implements the AlwaysValid pattern
     if (first == null || second == null) {
       throw new IllegalArgumentException("Teams must be provided");
@@ -23,11 +24,13 @@ public class Match {
       throw new IllegalStateException("Teams must be different");
     }
 
+    this.id = id;
     this.a = first;
     this.b = second;
   }
 
   public Match(Match other) {
+    this.id = other.id;
     this.a = new Team(other.a);
     this.b = new Team(other.b);
   }
@@ -48,6 +51,10 @@ public class Match {
 
   public Team getB() {
     return b;
+  }
+
+  public String getId() {
+    return id;
   }
 
   @Override

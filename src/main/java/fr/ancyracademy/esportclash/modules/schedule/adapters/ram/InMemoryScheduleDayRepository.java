@@ -28,6 +28,14 @@ public class InMemoryScheduleDayRepository implements ScheduleDayRepository {
   }
 
   @Override
+  public Optional<ScheduleDay> findByMatchId(String matchId) {
+    return scheduleDays.values().stream()
+        .filter(scheduleDay -> scheduleDay.containsMatch(matchId))
+        .findFirst()
+        .map(ScheduleDay::new);
+  }
+
+  @Override
   public void save(ScheduleDay scheduleDay) {
     scheduleDays.put(scheduleDay.getDate(), scheduleDay);
   }
