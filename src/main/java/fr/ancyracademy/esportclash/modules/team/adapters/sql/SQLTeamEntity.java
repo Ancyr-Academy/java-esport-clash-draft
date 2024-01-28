@@ -2,7 +2,8 @@ package fr.ancyracademy.esportclash.modules.team.adapters.sql;
 
 import jakarta.persistence.*;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "teams")
@@ -14,20 +15,20 @@ public class SQLTeamEntity {
   private String name;
 
   @OneToMany(
-      mappedBy = "id.teamId",
+      mappedBy = "team",
       cascade = CascadeType.ALL,
       orphanRemoval = true,
       fetch = FetchType.EAGER
   )
-  private List<SQLTeamMemberEntity> members;
+  private Set<SQLTeamMemberEntity> members;
 
   public SQLTeamEntity() {
   }
 
-  public SQLTeamEntity(String id, String name, List<SQLTeamMemberEntity> members) {
+  public SQLTeamEntity(String id, String name) {
     this.id = id;
     this.name = name;
-    this.members = members;
+    this.members = new HashSet<>();
   }
 
   public String getId() {
@@ -46,11 +47,11 @@ public class SQLTeamEntity {
     this.name = name;
   }
 
-  public List<SQLTeamMemberEntity> getMembers() {
+  public Set<SQLTeamMemberEntity> getMembers() {
     return members;
   }
 
-  public void setMembers(List<SQLTeamMemberEntity> members) {
+  public void setMembers(Set<SQLTeamMemberEntity> members) {
     this.members = members;
   }
 

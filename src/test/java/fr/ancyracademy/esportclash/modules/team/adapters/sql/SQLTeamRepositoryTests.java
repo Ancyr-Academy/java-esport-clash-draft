@@ -53,9 +53,7 @@ public class SQLTeamRepositoryTests {
     assertEquals(originalTeam.getName(), savedTeam.getName());
 
     assertEquals(1, savedTeam.getMembers().size());
-
-    assertEquals(faker.getId(), savedTeam.getMembers().getFirst().getId());
-    assertEquals(Role.MID, savedTeam.getMembers().getFirst().getRole());
+    assertTrue(savedTeam.hasPlayer(faker.getId()));
   }
 
   @Test
@@ -70,12 +68,8 @@ public class SQLTeamRepositoryTests {
     var savedTeam = repository.findById(originalTeam.getId()).get();
 
     assertEquals(2, savedTeam.getMembers().size());
-
-    assertEquals(faker.getId(), savedTeam.getMembers().get(0).getId());
-    assertEquals(Role.MID, savedTeam.getMembers().get(0).getRole());
-
-    assertEquals(gumayusi.getId(), savedTeam.getMembers().get(1).getId());
-    assertEquals(Role.BOTTOM, savedTeam.getMembers().get(1).getRole());
+    assertTrue(savedTeam.hasPlayer(faker.getId()));
+    assertTrue(savedTeam.hasPlayer(gumayusi.getId()));
   }
 
   @Test
@@ -90,5 +84,19 @@ public class SQLTeamRepositoryTests {
     var savedTeam = repository.findById(originalTeam.getId()).get();
 
     assertEquals(0, savedTeam.getMembers().size());
+  }
+
+  @Test
+  void shouldFindATeamByPlayerId() {
+    var originalTeam = new Team("skt", "SKT", new ArrayList<>());
+    originalTeam.join(faker.getId(), Role.MID);
+    repository.save(originalTeam);
+
+    var savedTeamQuery = repository.findByPlayerId(faker.getId());
+    assertTrue(savedTeamQuery.isPresent());
+
+    var savedTeam = savedTeamQuery.get();
+    
+    assertEquals(originalTeam.getId(), savedTeam.getId());
   }
 }

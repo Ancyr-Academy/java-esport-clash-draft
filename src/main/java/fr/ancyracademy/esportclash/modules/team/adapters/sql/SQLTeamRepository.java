@@ -1,7 +1,9 @@
 package fr.ancyracademy.esportclash.modules.team.adapters.sql;
 
+import fr.ancyracademy.esportclash.modules.player.adapters.sql.SQLPlayerEntity;
 import fr.ancyracademy.esportclash.modules.team.model.Team;
 import fr.ancyracademy.esportclash.modules.team.ports.TeamRepository;
+import jakarta.persistence.EntityManager;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -9,8 +11,11 @@ import java.util.Optional;
 public class SQLTeamRepository implements TeamRepository {
   private final SQLTeamDataAccessor dataAccessor;
 
-  public SQLTeamRepository(SQLTeamDataAccessor dataAccessor) {
+  private final EntityManager entityManager;
+
+  public SQLTeamRepository(SQLTeamDataAccessor dataAccessor, EntityManager entityManager) {
     this.dataAccessor = dataAccessor;
+    this.entityManager = entityManager;
   }
 
   @Override
@@ -27,12 +32,15 @@ public class SQLTeamRepository implements TeamRepository {
 
   @Override
   public void save(Team team) {
-    var sqlTeam = new SQLTeamEntity(team.getId(), team.getName(), new ArrayList<>());
+    var sqlTeam = new SQLTeamEntity(team.getId(), team.getName());
 
     for (var member : team.getMembers()) {
+      var sqlPlayer = entityManager.getReference(SQLPlayerEntity.class, member.getId());
+
       sqlTeam.addMember(
           new SQLTeamMemberEntity(
-              new SQLTeamMemberId(member.getId(), team.getId()),
+              sqlTeam,
+              sqlPlayer,
               member.getRole()
           )
       );

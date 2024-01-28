@@ -1,6 +1,5 @@
 package fr.ancyracademy.esportclash.modules.team.adapters.sql;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 import java.io.Serializable;
@@ -8,11 +7,9 @@ import java.util.Objects;
 
 @Embeddable
 public class SQLTeamMemberId implements Serializable {
-  @Column(name = "player_id")
   private String playerId;
-
-  @Column(name = "team_id")
   private String teamId;
+
 
   public SQLTeamMemberId() {
   }
