@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class PlayerAdapterConfiguration {
+public class TeamAdapterConfiguration {
   @Bean
   TeamRepository getTeamRepository(SQLTeamDataAccessor dataAccessor, EntityManager entityManager) {
     return new SQLTeamRepository(dataAccessor, entityManager);
