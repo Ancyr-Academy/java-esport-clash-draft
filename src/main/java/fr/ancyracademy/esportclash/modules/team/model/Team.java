@@ -12,6 +12,12 @@ public class Team {
 
   private final List<TeamMember> members;
 
+  public Team(String id, String name) {
+    this.id = id;
+    this.name = name;
+    this.members = new ArrayList<>();
+  }
+
   public Team(String id, String name, List<TeamMember> members) {
     this.id = id;
     this.name = name;

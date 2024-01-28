@@ -96,7 +96,19 @@ public class SQLTeamRepositoryTests {
     assertTrue(savedTeamQuery.isPresent());
 
     var savedTeam = savedTeamQuery.get();
-    
+
     assertEquals(originalTeam.getId(), savedTeam.getId());
+  }
+
+  @Test
+  void shouldDeleteATeam() {
+    var originalTeam = new Team("skt", "SKT", new ArrayList<>());
+    originalTeam.join(faker.getId(), Role.MID);
+    repository.save(originalTeam);
+
+    repository.delete(originalTeam);
+
+    var savedTeamQuery = repository.findById(originalTeam.getId());
+    assertTrue(savedTeamQuery.isEmpty());
   }
 }
