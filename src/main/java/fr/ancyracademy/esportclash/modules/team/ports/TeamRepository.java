@@ -9,9 +9,9 @@ public interface TeamRepository {
 
   Optional<Team> findByPlayerId(String playerId);
 
-  void save(Team player);
+  void save(Team team);
 
-  void delete(Team player);
+  void delete(Team team);
 
   void clear();
 }

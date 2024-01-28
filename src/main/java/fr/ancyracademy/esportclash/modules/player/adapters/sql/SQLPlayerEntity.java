@@ -1,8 +1,7 @@
 package fr.ancyracademy.esportclash.modules.player.adapters.sql;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import fr.ancyracademy.esportclash.modules.player.model.Role;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "players")
@@ -10,14 +9,17 @@ public class SQLPlayerEntity {
   @Id
   private String id;
 
+  @Column
   private String name;
 
-  private String mainRole;
+  @Enumerated(EnumType.STRING)
+  @Column
+  private Role mainRole;
 
   public SQLPlayerEntity() {
   }
 
-  public SQLPlayerEntity(String id, String name, String mainRole) {
+  public SQLPlayerEntity(String id, String name, Role mainRole) {
     this.id = id;
     this.name = name;
     this.mainRole = mainRole;
@@ -39,11 +41,11 @@ public class SQLPlayerEntity {
     this.name = name;
   }
 
-  public String getMainRole() {
+  public Role getMainRole() {
     return mainRole;
   }
 
-  public void setMainRole(String mainRole) {
+  public void setMainRole(Role mainRole) {
     this.mainRole = mainRole;
   }
 }
