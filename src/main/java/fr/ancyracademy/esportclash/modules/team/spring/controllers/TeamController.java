@@ -4,6 +4,7 @@ import fr.ancyracademy.esportclash.modules.player.model.Role;
 import fr.ancyracademy.esportclash.modules.team.spring.dto.AddPlayerToTeamDTO;
 import fr.ancyracademy.esportclash.modules.team.spring.dto.CreateTeamDTO;
 import fr.ancyracademy.esportclash.modules.team.usecases.*;
+import fr.ancyracademy.esportclash.modules.team.viewmodel.TeamViewModel;
 import fr.ancyracademy.esportclash.shared.IdResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -21,16 +22,20 @@ public class TeamController {
 
   private final RemovePlayerFromTeamUseCase removePlayerFromTeamUseCase;
 
+  private final GetTeamByIdUseCase getTeamByIdUseCase;
+
   public TeamController(
       CreateTeamUseCase createTeamUseCase,
       DeleteTeamUseCase deleteTeamUseCase,
       AddPlayerToTeamUseCase addPlayerToTeamUseCase,
-      RemovePlayerFromTeamUseCase removePlayerFromTeamUseCase
+      RemovePlayerFromTeamUseCase removePlayerFromTeamUseCase,
+      GetTeamByIdUseCase getTeamByIdUseCase
   ) {
     this.createTeamUseCase = createTeamUseCase;
     this.deleteTeamUseCase = deleteTeamUseCase;
     this.addPlayerToTeamUseCase = addPlayerToTeamUseCase;
     this.removePlayerFromTeamUseCase = removePlayerFromTeamUseCase;
+    this.getTeamByIdUseCase = getTeamByIdUseCase;
   }
 
   @PostMapping
@@ -76,5 +81,13 @@ public class TeamController {
     );
 
     return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+  }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<TeamViewModel> getTeamById(
+      @PathVariable("id") String id
+  ) {
+    var team = getTeamByIdUseCase.execute(new GetTeamByIdInput(id));
+    return new ResponseEntity<>(team, HttpStatus.OK);
   }
 }

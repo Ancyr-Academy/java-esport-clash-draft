@@ -2,10 +2,7 @@ package fr.ancyracademy.esportclash.modules.team.spring.configuration;
 
 import fr.ancyracademy.esportclash.modules.player.ports.PlayerRepository;
 import fr.ancyracademy.esportclash.modules.team.ports.TeamRepository;
-import fr.ancyracademy.esportclash.modules.team.usecases.AddPlayerToTeamUseCase;
-import fr.ancyracademy.esportclash.modules.team.usecases.CreateTeamUseCase;
-import fr.ancyracademy.esportclash.modules.team.usecases.DeleteTeamUseCase;
-import fr.ancyracademy.esportclash.modules.team.usecases.RemovePlayerFromTeamUseCase;
+import fr.ancyracademy.esportclash.modules.team.usecases.*;
 import fr.ancyracademy.esportclash.shared.id.IdProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -51,6 +48,17 @@ public class TeamUseCasesConfiguration {
     return new RemovePlayerFromTeamUseCase(
         playerRepository,
         teamRepository
+    );
+  }
+
+  @Bean
+  public GetTeamByIdUseCase getTeamByIdUseCase(
+      TeamRepository teamRepository,
+      PlayerRepository playerRepository
+  ) {
+    return new GetTeamByIdUseCase(
+        teamRepository,
+        playerRepository
     );
   }
 }

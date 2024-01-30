@@ -11,12 +11,12 @@ public class SQLTeamMemberEntity {
   private SQLTeamMemberId id;
 
   @ManyToOne(fetch = FetchType.EAGER)
-  @MapsId("teamId") // Maps teamId in TeamMemberId
+  @MapsId("teamId")
   @JoinColumn(name = "team_id", insertable = false, updatable = false)
   private SQLTeamEntity team;
 
   @ManyToOne(fetch = FetchType.EAGER)
-  @MapsId("playerId") // Maps playerId in TeamMemberId
+  @MapsId("playerId")
   @JoinColumn(name = "player_id", insertable = false, updatable = false)
   private SQLPlayerEntity player;
 

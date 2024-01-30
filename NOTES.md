@@ -2,4 +2,5 @@
 
 - Cascading delete is not implemented. One cannot delete a player without first
   deleting the teams in which they belong.
-- CQRS will be implemented in v2
+- We want the TeamViewModel.Member to show the name of the member. We first do
+  this by doing redundants requests, it will open the door for CQRS.
