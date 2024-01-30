@@ -1,7 +1,10 @@
 package fr.ancyracademy.esportclash.shared;
 
 public class IdResponse {
-  private final String id;
+  private String id;
+
+  public IdResponse() {
+  }
 
   public IdResponse(String id) {
     this.id = id;
@@ -9,5 +12,9 @@ public class IdResponse {
 
   public String getId() {
     return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
   }
 }

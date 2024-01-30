@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
-import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.time.LocalDate;
 
@@ -36,13 +35,11 @@ public class SQLScheduleDayRepositoryTests {
   @Autowired
   private PlayerRepository playerRepository;
 
-  @Autowired
-  private PostgreSQLContainer container;
-
   @BeforeEach
   void setUp() {
     repository.clear();
-    System.out.println(container.getMappedPort(5432));
+    teamRepository.clear();
+    playerRepository.clear();
   }
 
   @Test
