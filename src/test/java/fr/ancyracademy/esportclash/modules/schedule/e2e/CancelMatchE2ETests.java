@@ -1,6 +1,5 @@
 package fr.ancyracademy.esportclash.modules.schedule.e2e;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.ancyracademy.esportclash.PostgreSQLDbConfiguration;
 import fr.ancyracademy.esportclash.modules.player.model.Player;
 import fr.ancyracademy.esportclash.modules.player.model.Role;
@@ -45,9 +44,6 @@ public class CancelMatchE2ETests {
 
   @Autowired
   private MockMvc mockMvc;
-
-  @Autowired
-  private ObjectMapper objectMapper;
 
   Team createTeam(String name) {
     var team = new Team(name, name);

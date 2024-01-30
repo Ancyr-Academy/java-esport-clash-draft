@@ -121,21 +121,18 @@ public class ScheduleDay extends Entity {
     /**
      * Find a match in the schedule
      *
-     * @param match
+     * @param matchId
      * @return
      */
-    public Optional<Pair<Moment, Match>> findMatch(Match match) {
-      return matches.keySet().stream()
-          .filter(m -> matches.get(m).equals(match))
-          .findFirst()
-          .map(m -> new Pair<>(m, matches.get(m)));
-    }
-
     public Optional<Pair<Moment, Match>> findMatch(String matchId) {
       return matches.keySet().stream()
           .filter(m -> matches.get(m).getId().equals(matchId))
           .findFirst()
           .map(m -> new Pair<>(m, matches.get(m)));
+    }
+
+    public Optional<Pair<Moment, Match>> findMatch(Match match) {
+      return findMatch(match.getId());
     }
 
     public Match get(Moment moment) {
