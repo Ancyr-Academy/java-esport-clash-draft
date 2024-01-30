@@ -6,7 +6,6 @@ import fr.ancyracademy.esportclash.modules.team.spring.dto.CreateTeamDTO;
 import fr.ancyracademy.esportclash.modules.team.usecases.*;
 import fr.ancyracademy.esportclash.shared.IdResponse;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +21,6 @@ public class TeamController {
 
   private final RemovePlayerFromTeamUseCase removePlayerFromTeamUseCase;
 
-  @Autowired
   public TeamController(
       CreateTeamUseCase createTeamUseCase,
       DeleteTeamUseCase deleteTeamUseCase,
