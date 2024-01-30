@@ -6,8 +6,6 @@ import fr.ancyracademy.esportclash.shared.IdResponse;
 import fr.ancyracademy.esportclash.shared.UseCase;
 import fr.ancyracademy.esportclash.shared.id.IdProvider;
 
-import java.util.ArrayList;
-
 public class CreateTeamUseCase implements UseCase<CreateTeamInput, IdResponse> {
   private final TeamRepository teamRepository;
 
@@ -22,8 +20,7 @@ public class CreateTeamUseCase implements UseCase<CreateTeamInput, IdResponse> {
   public IdResponse execute(CreateTeamInput input) {
     Team team = new Team(
         this.idProvider.generate(),
-        input.name(),
-        new ArrayList<>()
+        input.name()
     );
 
     this.teamRepository.save(team);

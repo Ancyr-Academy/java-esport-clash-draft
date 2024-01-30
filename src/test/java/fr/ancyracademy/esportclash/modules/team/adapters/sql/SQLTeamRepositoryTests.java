@@ -11,20 +11,21 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-
-import java.util.ArrayList;
+import org.springframework.test.annotation.DirtiesContext;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @Import(PostgreSQLDbConfiguration.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class SQLTeamRepositoryTests {
   private final Player faker = new Player("faker", "Faker", Role.MID);
   private final Player gumayusi = new Player("gumayusi", "Gumayusi", Role.BOTTOM);
 
   @Autowired
   private TeamRepository repository;
+
   @Autowired
   private PlayerRepository playerRepository;
 
@@ -39,7 +40,7 @@ public class SQLTeamRepositoryTests {
 
   @Test
   void shouldSaveTeam() {
-    var originalTeam = new Team("skt", "SKT", new ArrayList<>());
+    var originalTeam = new Team("skt", "SKT");
     originalTeam.join(faker.getId(), Role.MID);
 
     repository.save(originalTeam);
@@ -58,7 +59,7 @@ public class SQLTeamRepositoryTests {
 
   @Test
   void shouldAddMemberToTeam() {
-    var originalTeam = new Team("skt", "SKT", new ArrayList<>());
+    var originalTeam = new Team("skt", "SKT");
     originalTeam.join(faker.getId(), Role.MID);
     repository.save(originalTeam);
 
@@ -74,7 +75,7 @@ public class SQLTeamRepositoryTests {
 
   @Test
   void shouldRemoveMemberFromTheTeam() {
-    var originalTeam = new Team("skt", "SKT", new ArrayList<>());
+    var originalTeam = new Team("skt", "SKT");
     originalTeam.join(faker.getId(), Role.MID);
     repository.save(originalTeam);
 
@@ -88,7 +89,7 @@ public class SQLTeamRepositoryTests {
 
   @Test
   void shouldFindATeamByPlayerId() {
-    var originalTeam = new Team("skt", "SKT", new ArrayList<>());
+    var originalTeam = new Team("skt", "SKT");
     originalTeam.join(faker.getId(), Role.MID);
     repository.save(originalTeam);
 
@@ -102,7 +103,7 @@ public class SQLTeamRepositoryTests {
 
   @Test
   void shouldDeleteATeam() {
-    var originalTeam = new Team("skt", "SKT", new ArrayList<>());
+    var originalTeam = new Team("skt", "SKT");
     originalTeam.join(faker.getId(), Role.MID);
     repository.save(originalTeam);
 

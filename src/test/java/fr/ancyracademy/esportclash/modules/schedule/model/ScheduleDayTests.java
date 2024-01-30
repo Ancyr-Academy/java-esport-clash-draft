@@ -5,7 +5,6 @@ import fr.ancyracademy.esportclash.modules.team.model.Team;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,8 +12,8 @@ public class ScheduleDayTests {
   private Team createSKT() {
     var team = new Team(
         "skt",
-        "SKT",
-        new ArrayList<>());
+        "SKT"
+    );
 
     team.join("skt-top", Role.TOP);
     team.join("skt-jgl", Role.JUNGLE);
@@ -28,8 +27,8 @@ public class ScheduleDayTests {
   private Team createFNC() {
     var team = new Team(
         "fnc",
-        "Fnatic",
-        new ArrayList<>());
+        "Fnatic"
+    );
 
     team.join("fnc-top", Role.TOP);
     team.join("fnc-jgl", Role.JUNGLE);
@@ -43,8 +42,8 @@ public class ScheduleDayTests {
   private Team createDamwon() {
     var team = new Team(
         "dmw",
-        "Damwon",
-        new ArrayList<>());
+        "Damwon"
+    );
 
     team.join("dmw-top", Role.TOP);
     team.join("dmw-jgl", Role.JUNGLE);

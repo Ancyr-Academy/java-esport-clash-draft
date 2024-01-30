@@ -5,8 +5,8 @@ import fr.ancyracademy.esportclash.modules.team.model.Team;
 import fr.ancyracademy.esportclash.modules.team.ports.TeamRepository;
 import jakarta.persistence.EntityManager;
 
-import java.util.ArrayList;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class SQLTeamRepository implements TeamRepository {
   private final SQLTeamDataAccessor dataAccessor;
@@ -21,13 +21,13 @@ public class SQLTeamRepository implements TeamRepository {
   @Override
   public Optional<Team> findById(String id) {
     var sqlTeam = dataAccessor.findById(id);
-    return sqlTeam.map(this::fromSql);
+    return sqlTeam.map(this::toDomain);
   }
 
   @Override
   public Optional<Team> findByPlayerId(String playerId) {
     var sqlTeam = dataAccessor.findByPlayerId(playerId);
-    return sqlTeam.map(this::fromSql);
+    return sqlTeam.map(this::toDomain);
   }
 
   @Override
@@ -59,17 +59,13 @@ public class SQLTeamRepository implements TeamRepository {
     dataAccessor.deleteAll();
   }
 
-  private Team fromSql(SQLTeamEntity sqlTeam) {
-    var members = new ArrayList<Team.TeamMember>();
-    for (var member : sqlTeam.getMembers()) {
-      members.add(
-          new Team.TeamMember(
-              member.getId().getPlayerId(),
-              member.getRole()
-          )
-      );
-    }
-
-    return new Team(sqlTeam.getId(), sqlTeam.getName(), members);
+  private Team toDomain(SQLTeamEntity entity) {
+    return new Team(
+        entity.getId(),
+        entity.getName(),
+        entity.getMembers().stream().map(member ->
+                new Team.TeamMember(member.getId().getPlayerId(), member.getRole()))
+            .collect(Collectors.toSet())
+    );
   }
 }

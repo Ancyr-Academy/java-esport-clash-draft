@@ -10,12 +10,12 @@ public class SQLTeamMemberEntity {
   @EmbeddedId
   private SQLTeamMemberId id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @MapsId("teamId") // Maps teamId in TeamMemberId
   @JoinColumn(name = "team_id", insertable = false, updatable = false)
   private SQLTeamEntity team;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @MapsId("playerId") // Maps playerId in TeamMemberId
   @JoinColumn(name = "player_id", insertable = false, updatable = false)
   private SQLPlayerEntity player;
@@ -38,6 +38,10 @@ public class SQLTeamMemberEntity {
 
   public SQLTeamMemberId getId() {
     return id;
+  }
+
+  public String getPlayerId() {
+    return id.getPlayerId();
   }
 
   public Role getRole() {

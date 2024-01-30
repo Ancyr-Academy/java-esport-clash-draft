@@ -6,14 +6,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DeleteTeamUseCaseTests {
   InMemoryTeamRepository teamRepository = new InMemoryTeamRepository();
 
-  Team team = new Team("skt", "SKT", new ArrayList<>());
+  Team team = new Team("skt", "SKT");
 
   @BeforeEach
   void setUp() {

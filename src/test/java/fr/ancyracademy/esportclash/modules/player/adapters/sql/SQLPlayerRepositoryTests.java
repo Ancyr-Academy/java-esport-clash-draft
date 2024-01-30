@@ -3,20 +3,23 @@ package fr.ancyracademy.esportclash.modules.player.adapters.sql;
 import fr.ancyracademy.esportclash.PostgreSQLDbConfiguration;
 import fr.ancyracademy.esportclash.modules.player.model.Player;
 import fr.ancyracademy.esportclash.modules.player.model.Role;
+import fr.ancyracademy.esportclash.modules.player.ports.PlayerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.annotation.DirtiesContext;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @SpringBootTest
 @Import(PostgreSQLDbConfiguration.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class SQLPlayerRepositoryTests {
   @Autowired
-  private SQLPlayerRepository repository;
+  private PlayerRepository repository;
 
   @BeforeEach
   void setUp() {

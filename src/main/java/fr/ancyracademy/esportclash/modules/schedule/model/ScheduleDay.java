@@ -6,6 +6,8 @@ import org.antlr.v4.runtime.misc.Pair;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class ScheduleDay extends Entity {
@@ -45,15 +47,15 @@ public class ScheduleDay extends Entity {
     }
 
     // A team can only play once per day
-    if (schedule.teamPlays(match.getA())) {
+    if (schedule.teamPlays(match.getFirst())) {
       throw new IllegalStateException(
-          "Team " + match.getA().getName() + " is already playing that day"
+          "Team " + match.getFirst().getName() + " is already playing that day"
       );
     }
 
-    if (schedule.teamPlays(match.getB())) {
+    if (schedule.teamPlays(match.getSecond())) {
       throw new IllegalStateException(
-          "Team " + match.getB().getName() + " is already playing that day"
+          "Team " + match.getSecond().getName() + " is already playing that day"
       );
     }
 
@@ -82,6 +84,10 @@ public class ScheduleDay extends Entity {
 
   public boolean isEmpty() {
     return schedule.isEmpty();
+  }
+
+  public List<Map.Entry<Moment, Match>> getMatches() {
+    return schedule.getMatches();
   }
 
   /**
@@ -146,6 +152,10 @@ public class ScheduleDay extends Entity {
 
     public boolean isEmpty() {
       return matches.isEmpty();
+    }
+
+    public List<Map.Entry<Moment, Match>> getMatches() {
+      return List.copyOf(matches.entrySet());
     }
   }
 }

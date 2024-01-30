@@ -3,16 +3,14 @@ package fr.ancyracademy.esportclash.modules.team.model;
 import fr.ancyracademy.esportclash.modules.player.model.Role;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TeamTests {
   Team createTeamFixture() {
     return new Team(
         "skt",
-        "SKT T1",
-        new ArrayList<>());
+        "SKT T1"
+    );
   }
 
   @Test

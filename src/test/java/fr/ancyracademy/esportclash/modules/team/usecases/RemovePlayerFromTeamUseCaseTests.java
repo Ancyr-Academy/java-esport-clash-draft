@@ -10,8 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class RemovePlayerFromTeamUseCaseTests {
@@ -33,7 +31,7 @@ public class RemovePlayerFromTeamUseCaseTests {
   void setUp() {
     faker = new Player("faker", "Faker", Role.MID);
     teddy = new Player("gumayusi", "Gumayusi", Role.BOTTOM);
-    skt = new Team("skt", "SKT", new ArrayList<>());
+    skt = new Team("skt", "SKT");
     skt.join(faker.getId(), Role.MID);
 
     teamRepository.clear();

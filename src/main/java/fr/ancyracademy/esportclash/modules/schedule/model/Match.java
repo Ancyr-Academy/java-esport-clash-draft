@@ -5,10 +5,9 @@ import fr.ancyracademy.esportclash.modules.team.model.Team;
 import java.util.Objects;
 
 public class Match {
-  private final Team a;
-  private final Team b;
+  private final Team first;
+  private final Team second;
   private String id;
-
 
   public Match(String id, Team first, Team second) {
     // Match implements the AlwaysValid pattern
@@ -25,14 +24,14 @@ public class Match {
     }
 
     this.id = id;
-    this.a = first;
-    this.b = second;
+    this.first = first;
+    this.second = second;
   }
 
   public Match(Match other) {
     this.id = other.id;
-    this.a = new Team(other.a);
-    this.b = new Team(other.b);
+    this.first = new Team(other.first);
+    this.second = new Team(other.second);
   }
 
   /**
@@ -42,15 +41,15 @@ public class Match {
    * @return
    */
   public boolean includesTeam(Team team) {
-    return a.getId().equals(team.getId()) || b.getId().equals(team.getId());
+    return first.getId().equals(team.getId()) || second.getId().equals(team.getId());
   }
 
-  public Team getA() {
-    return a;
+  public Team getFirst() {
+    return first;
   }
 
-  public Team getB() {
-    return b;
+  public Team getSecond() {
+    return second;
   }
 
   public String getId() {
@@ -62,11 +61,11 @@ public class Match {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     Match match = (Match) o;
-    return Objects.equals(a, match.a) && Objects.equals(b, match.b);
+    return Objects.equals(first, match.first) && Objects.equals(second, match.second);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(a, b);
+    return Objects.hash(first, second);
   }
 }

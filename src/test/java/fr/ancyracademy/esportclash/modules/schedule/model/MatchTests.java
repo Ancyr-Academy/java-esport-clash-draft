@@ -4,16 +4,14 @@ import fr.ancyracademy.esportclash.modules.player.model.Role;
 import fr.ancyracademy.esportclash.modules.team.model.Team;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MatchTests {
   private Team createSKT() {
     var team = new Team(
         "skt",
-        "SKT",
-        new ArrayList<>());
+        "SKT"
+    );
 
     team.join("skt-top", Role.TOP);
     team.join("skt-jgl", Role.JUNGLE);
@@ -27,8 +25,8 @@ public class MatchTests {
   private Team createFNC() {
     var team = new Team(
         "fnc",
-        "Fnatic",
-        new ArrayList<>());
+        "Fnatic"
+    );
 
     team.join("fnc-top", Role.TOP);
     team.join("fnc-jgl", Role.JUNGLE);

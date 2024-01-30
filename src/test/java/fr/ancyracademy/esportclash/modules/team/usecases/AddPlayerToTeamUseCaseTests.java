@@ -10,8 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AddPlayerToTeamUseCaseTests {
@@ -21,9 +19,9 @@ public class AddPlayerToTeamUseCaseTests {
 
   Player faker = new Player("faker", "Faker", Role.MID);
 
-  Team skt = new Team("skt", "SKT", new ArrayList<>());
+  Team skt = new Team("skt", "SKT");
 
-  Team damwon = new Team("damwon", "Damwon", new ArrayList<>());
+  Team damwon = new Team("damwon", "Damwon");
 
   AddPlayerToTeamUseCase createUseCase() {
     return new AddPlayerToTeamUseCase(playerRepository, teamRepository);
