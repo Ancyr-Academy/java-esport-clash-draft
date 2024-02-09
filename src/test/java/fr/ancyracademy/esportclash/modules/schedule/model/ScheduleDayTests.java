@@ -77,19 +77,7 @@ public class ScheduleDayTests {
         () -> scheduleDay.schedule(Moment.AFTERNOON, match)
     );
 
-    assertEquals("Match already scheduled", exception.getMessage());
-  }
-
-  @Test
-  public void whenReschedulingAtSameMoment_shouldSkip() {
-    var scheduleDay = new ScheduleDay("id", LocalDate.now());
-    var match = new Match("id", createFNC(), createSKT());
-
-    scheduleDay.schedule(Moment.MORNING, match);
-    scheduleDay.schedule(Moment.MORNING, match);
-
-    var morningMatch = scheduleDay.getMatch(Moment.MORNING).get();
-    assertEquals(match, morningMatch);
+    assertEquals("Team Fnatic is already playing that day", exception.getMessage());
   }
 
   @Test

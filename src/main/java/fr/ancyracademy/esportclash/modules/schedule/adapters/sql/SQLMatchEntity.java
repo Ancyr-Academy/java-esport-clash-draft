@@ -1,7 +1,7 @@
 package fr.ancyracademy.esportclash.modules.schedule.adapters.sql;
 
 import fr.ancyracademy.esportclash.modules.schedule.model.Moment;
-import fr.ancyracademy.esportclash.modules.team.adapters.sql.SQLTeamEntity;
+import fr.ancyracademy.esportclash.modules.team.model.Team;
 import jakarta.persistence.*;
 
 @Entity
@@ -12,11 +12,11 @@ public class SQLMatchEntity {
 
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "first_id")
-  private SQLTeamEntity first;
+  private Team first;
 
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "second_id")
-  private SQLTeamEntity second;
+  private Team second;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "schedule_day_id")
@@ -28,7 +28,7 @@ public class SQLMatchEntity {
   public SQLMatchEntity() {
   }
 
-  public SQLMatchEntity(String id, SQLTeamEntity first, SQLTeamEntity second, SQLScheduleDayEntity scheduleDay, Moment moment) {
+  public SQLMatchEntity(String id, Team first, Team second, SQLScheduleDayEntity scheduleDay, Moment moment) {
     this.id = id;
     this.first = first;
     this.second = second;
@@ -44,20 +44,20 @@ public class SQLMatchEntity {
     this.id = id;
   }
 
-  public SQLTeamEntity getFirst() {
+  public Team getFirst() {
     return first;
   }
 
-  public void setFirst(SQLTeamEntity first) {
+  public void setFirst(Team first) {
     this.first = first;
   }
 
 
-  public SQLTeamEntity getSecond() {
+  public Team getSecond() {
     return second;
   }
 
-  public void setSecond(SQLTeamEntity second) {
+  public void setSecond(Team second) {
     this.second = second;
   }
 

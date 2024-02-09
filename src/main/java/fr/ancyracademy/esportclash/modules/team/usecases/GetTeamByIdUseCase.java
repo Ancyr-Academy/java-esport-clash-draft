@@ -31,7 +31,7 @@ public class GetTeamByIdUseCase implements UseCase<GetTeamByIdInput, TeamViewMod
   private List<TeamViewModel.TeamMember> toTeamMembers(Team team, List<Player> players) {
     return players.stream().map(
         player -> {
-          var member = team.getMembers().stream().filter(m -> m.getId().equals(player.getId())).findFirst().orElseThrow();
+          var member = team.getMembers().stream().filter(m -> m.getPlayerId().equals(player.getId())).findFirst().orElseThrow();
           var role = member.getRole();
           return new TeamViewModel.TeamMember(player.getId(), player.getName(), role.toString());
         }
@@ -40,7 +40,7 @@ public class GetTeamByIdUseCase implements UseCase<GetTeamByIdInput, TeamViewMod
 
   private List<Player> getPlayers(Team team) {
     return team.getMembers().stream().map(
-        member -> playerRepository.findById(member.getId()).orElseThrow()
+        member -> playerRepository.findById(member.getPlayerId()).orElseThrow()
     ).toList();
   }
 }

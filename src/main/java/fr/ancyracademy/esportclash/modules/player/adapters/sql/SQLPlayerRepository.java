@@ -14,18 +14,12 @@ public class SQLPlayerRepository implements PlayerRepository {
 
   @Override
   public void save(Player player) {
-    SQLPlayerEntity document = new SQLPlayerEntity();
-    document.setId(player.getId());
-    document.setName(player.getName());
-    document.setMainRole(player.getMainRole());
-
-    dataAccessor.save(document);
+    dataAccessor.save(player);
   }
 
   @Override
   public Optional<Player> findById(String id) {
-    Optional<SQLPlayerEntity> document = dataAccessor.findById(id);
-    return document.map(this::fromSql);
+    return dataAccessor.findById(id);
   }
 
   @Override
@@ -36,13 +30,5 @@ public class SQLPlayerRepository implements PlayerRepository {
   @Override
   public void clear() {
     dataAccessor.deleteAll();
-  }
-
-  private Player fromSql(SQLPlayerEntity document) {
-    return new Player(
-        document.getId(),
-        document.getName(),
-        document.getMainRole()
-    );
   }
 }

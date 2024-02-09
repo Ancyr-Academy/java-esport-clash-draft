@@ -1,17 +1,34 @@
 package fr.ancyracademy.esportclash.modules.team.model;
 
+import fr.ancyracademy.esportclash.modules.player.model.Player;
 import fr.ancyracademy.esportclash.modules.player.model.Role;
+import jakarta.persistence.*;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Entity
+@Table(name = "teams")
 public class Team {
-  private final String id;
+  @Id
+  private String id;
 
-  private final String name;
+  @Column
+  private String name;
 
-  private final Set<TeamMember> members;
+  @OneToMany(
+      mappedBy = "team",
+      cascade = CascadeType.ALL,
+      orphanRemoval = true,
+      fetch = FetchType.EAGER
+  )
+  private Set<TeamMember> members;
+
+  protected Team() {
+
+  }
 
   public Team(String id, String name) {
     this.id = id;
@@ -32,7 +49,7 @@ public class Team {
   }
 
   public void join(String playerId, Role role) {
-    if (members.stream().anyMatch(member -> member.getId().equals(playerId))) {
+    if (members.stream().anyMatch(member -> member.getPlayerId().equals(playerId))) {
       throw new IllegalArgumentException("Player already in team");
     }
 
@@ -40,15 +57,20 @@ public class Team {
       throw new IllegalArgumentException("Role already taken");
     }
 
-    members.add(new TeamMember(playerId, role));
+    members.add(new TeamMember(
+        UUID.randomUUID().toString(),
+        playerId,
+        id,
+        role
+    ));
   }
 
   public void leave(String playerId) {
-    if (members.stream().noneMatch(member -> member.getId().equals(playerId))) {
+    if (members.stream().noneMatch(member -> member.getPlayerId().equals(playerId))) {
       throw new IllegalArgumentException("Player not in team");
     }
 
-    members.removeIf(member -> member.getId().equals(playerId));
+    members.removeIf(member -> member.getPlayerId().equals(playerId));
   }
 
   public boolean isComplete() {
@@ -56,7 +78,7 @@ public class Team {
   }
 
   public boolean hasPlayer(String playerId) {
-    return members.stream().anyMatch(member -> member.getId().equals(playerId));
+    return members.stream().anyMatch(member -> member.getPlayerId().equals(playerId));
   }
 
   public String getId() {
@@ -71,18 +93,45 @@ public class Team {
     return members;
   }
 
+  @Entity
+  @Table(name = "team_members")
   public static class TeamMember {
-    private final String id;
+    @Id
+    private String id;
 
+    @Column(name = "player_id")
+    private String playerId;
+
+    @Column(name = "team_id")
+    private String teamId;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @MapsId("teamId")
+    @JoinColumn(name = "team_id", insertable = false, updatable = false)
+    private Team team;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @MapsId("playerId")
+    @JoinColumn(name = "player_id", insertable = false, updatable = false)
+    private Player player;
+
+    @Enumerated(EnumType.STRING)
     private Role role;
 
-    public TeamMember(String id, Role role) {
+    protected TeamMember() {
+
+    }
+
+    public TeamMember(String id, String playerId, String teamId, Role role) {
       this.id = id;
+      this.playerId = playerId;
+      this.teamId = teamId;
       this.role = role;
     }
 
     public TeamMember(TeamMember other) {
-      this.id = other.id;
+      this.playerId = other.playerId;
+      this.teamId = other.teamId;
       this.role = other.role;
     }
 
@@ -96,6 +145,14 @@ public class Team {
 
     public String getId() {
       return id;
+    }
+
+    public String getPlayerId() {
+      return playerId;
+    }
+
+    public String getTeamId() {
+      return teamId;
     }
   }
 }

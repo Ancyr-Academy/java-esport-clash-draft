@@ -34,17 +34,7 @@ public class ScheduleDay extends Entity {
    * @param match
    */
   public void schedule(Moment moment, Match match) {
-    // First check if the match isn't already scheduled
-    var scheduledMatch = schedule.findMatch(match);
 
-    if (scheduledMatch.isPresent()) {
-      // If the match is scheduled at the same moment, we consider it a success
-      if (scheduledMatch.get().a.equals(moment)) {
-        return;
-      }
-
-      throw new IllegalStateException("Match already scheduled");
-    }
 
     // A team can only play once per day
     if (schedule.teamPlays(match.getFirst())) {

@@ -4,14 +4,12 @@ import fr.ancyracademy.esportclash.modules.schedule.model.Match;
 import fr.ancyracademy.esportclash.modules.schedule.model.Moment;
 import fr.ancyracademy.esportclash.modules.schedule.model.ScheduleDay;
 import fr.ancyracademy.esportclash.modules.schedule.ports.ScheduleDayRepository;
-import fr.ancyracademy.esportclash.modules.team.adapters.sql.SQLTeamEntity;
 import fr.ancyracademy.esportclash.modules.team.model.Team;
 import jakarta.persistence.EntityManager;
 
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class SQLScheduleDayRepository implements ScheduleDayRepository {
   private final SQLScheduleDayAccessor accessor;
@@ -46,8 +44,8 @@ public class SQLScheduleDayRepository implements ScheduleDayRepository {
       var moment = entry.getKey();
       var match = entry.getValue();
 
-      var firstTeam = entityManager.find(SQLTeamEntity.class, match.getFirst().getId());
-      var secondTeam = entityManager.find(SQLTeamEntity.class, match.getSecond().getId());
+      var firstTeam = entityManager.find(Team.class, match.getFirst().getId());
+      var secondTeam = entityManager.find(Team.class, match.getSecond().getId());
 
       SQLMatchEntity matchEntity = new SQLMatchEntity(
           match.getId(),
@@ -77,25 +75,13 @@ public class SQLScheduleDayRepository implements ScheduleDayRepository {
     ScheduleDay scheduleDay = new ScheduleDay(entity.getId(), entity.getDay());
 
     entity.getMatches().forEach(matchEntity -> {
-      var first = toDomain(matchEntity.getFirst());
-      var second = toDomain(matchEntity.getSecond());
+      var first = matchEntity.getFirst();
+      var second = matchEntity.getSecond();
       var match = new Match(matchEntity.getId(), first, second);
 
       scheduleDay.schedule(matchEntity.getMoment(), match);
     });
 
     return scheduleDay;
-  }
-
-  private Team toDomain(SQLTeamEntity entity) {
-    return new Team(
-        entity.getId(),
-        entity.getName(),
-        entity.getMembers().stream().map(member ->
-                new Team.TeamMember(
-                    member.getPlayerId(),
-                    member.getRole()))
-            .collect(Collectors.toSet())
-    );
   }
 }

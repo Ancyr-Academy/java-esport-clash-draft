@@ -1,9 +1,23 @@
 package fr.ancyracademy.esportclash.modules.player.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "players")
 public class Player {
+  @Id
   private String id;
+
+  @Column
   private String name;
+
+  @Enumerated(EnumType.STRING)
+  @Column
   private Role mainRole;
+
+  public Player() {
+
+  }
 
   public Player(String id, String name, Role mainRole) {
     this.id = id;
