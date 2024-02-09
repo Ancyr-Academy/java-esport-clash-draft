@@ -2,55 +2,69 @@ package fr.ancyracademy.esportclash.modules.schedule.model;
 
 import fr.ancyracademy.esportclash.modules.team.model.Team;
 import fr.ancyracademy.esportclash.shared.BaseEntity;
+import jakarta.persistence.*;
 import org.antlr.v4.runtime.misc.Pair;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
-
+@Entity
+@Table(name = "schedule_days")
 public class ScheduleDay extends BaseEntity {
-  private final String id;
+  @Id
+  private String id;
 
-  private final LocalDate date;
+  @Column(name = "day")
+  private LocalDate day;
 
-  private final HashMap<Moment, Match> matches;
+  @OneToMany(
+      mappedBy = "scheduleDay",
+      cascade = CascadeType.ALL,
+      orphanRemoval = true,
+      fetch = FetchType.EAGER
+  )
+  @MapKeyEnumerated(EnumType.STRING)
+  private Map<Moment, Match> matches;
+
+  public ScheduleDay() {
+  }
 
   public ScheduleDay(String id, LocalDate date) {
     this.id = id;
-    this.date = date;
+    this.day = date;
     this.matches = new HashMap<>();
   }
 
   public ScheduleDay(ScheduleDay other) {
     this.id = other.id;
-    this.date = other.date;
+    this.day = other.day;
     this.matches = new HashMap<>(other.matches);
   }
 
-  /**
-   * Schedules the match at the given moment
-   *
-   * @param moment
-   * @param match
-   */
-  public void schedule(Moment moment, Match match) {
+  public Match schedule(Moment moment, Team first, Team second) {
     // A team can only play once per day
-    if (teamPlays(match.getFirst())) {
+    if (teamPlays(first)) {
       throw new IllegalStateException(
-          "Team " + match.getFirst().getName() + " is already playing that day"
+          "Team " + first.getName() + " is already playing that day"
       );
     }
 
-    if (teamPlays(match.getSecond())) {
+    if (teamPlays(second)) {
       throw new IllegalStateException(
-          "Team " + match.getSecond().getName() + " is already playing that day"
+          "Team " + second.getName() + " is already playing that day"
       );
     }
+
+    var match = new Match(
+        UUID.randomUUID().toString(),
+        this.id,
+        first,
+        second
+    );
 
     matches.put(moment, match);
+
+    return match;
   }
 
   public void cancel(String matchId) {
@@ -66,8 +80,8 @@ public class ScheduleDay extends BaseEntity {
     return Optional.of(matches.get(moment));
   }
 
-  public LocalDate getDate() {
-    return date;
+  public LocalDate getDay() {
+    return day;
   }
 
   public String getId() {

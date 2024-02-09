@@ -81,9 +81,7 @@ public class CancelMatchE2ETests {
     var fnatic = createTeam("fnatic");
 
     scheduleDay = new ScheduleDay("id", LocalDate.parse("2024-01-01"));
-    match = new Match("id", skt, fnatic);
-
-    scheduleDay.schedule(Moment.MORNING, match);
+    match = scheduleDay.schedule(Moment.MORNING, skt, fnatic);
 
     scheduleDayRepository.save(scheduleDay);
   }

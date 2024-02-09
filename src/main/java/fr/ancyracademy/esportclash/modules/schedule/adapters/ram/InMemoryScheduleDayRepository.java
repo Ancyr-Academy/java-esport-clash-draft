@@ -22,7 +22,7 @@ public class InMemoryScheduleDayRepository implements ScheduleDayRepository {
   @Override
   public Optional<ScheduleDay> findByDate(LocalDate date) {
     return scheduleDays.values().stream()
-        .filter(scheduleDay -> scheduleDay.getDate().equals(date))
+        .filter(scheduleDay -> scheduleDay.getDay().equals(date))
         .findFirst()
         .map(ScheduleDay::new);
   }
@@ -37,12 +37,12 @@ public class InMemoryScheduleDayRepository implements ScheduleDayRepository {
 
   @Override
   public void save(ScheduleDay scheduleDay) {
-    scheduleDays.put(scheduleDay.getDate(), scheduleDay);
+    scheduleDays.put(scheduleDay.getDay(), scheduleDay);
   }
 
   @Override
   public void delete(ScheduleDay scheduleDay) {
-    scheduleDays.remove(scheduleDay.getDate());
+    scheduleDays.remove(scheduleDay.getDay());
   }
 
   @Override

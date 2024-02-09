@@ -2,7 +2,6 @@ package fr.ancyracademy.esportclash.modules.schedule.usecases;
 
 import fr.ancyracademy.esportclash.modules.player.model.Role;
 import fr.ancyracademy.esportclash.modules.schedule.adapters.ram.InMemoryScheduleDayRepository;
-import fr.ancyracademy.esportclash.modules.schedule.model.Match;
 import fr.ancyracademy.esportclash.modules.schedule.model.Moment;
 import fr.ancyracademy.esportclash.modules.schedule.model.ScheduleDay;
 import fr.ancyracademy.esportclash.modules.schedule.ports.ScheduleDayRepository;
@@ -47,9 +46,8 @@ public class OrganizeMatchUseCaseTests {
     teamRepository.save(damwon);
     teamRepository.save(g2);
 
-    var match = new Match("id", damwon, g2);
     scheduleDay = new ScheduleDay(idProvider.generate(), LocalDate.parse("2024-01-01"));
-    scheduleDay.schedule(Moment.AFTERNOON, match);
+    scheduleDay.schedule(Moment.AFTERNOON, damwon, g2);
 
     scheduleDayRepository.save(scheduleDay);
   }

@@ -30,7 +30,6 @@ public class CancelMatchUseCaseTests {
   ScheduleDay scheduleDay;
 
   Match damwonVsG2;
-
   Match sktVsFnatic;
 
   @BeforeEach
@@ -50,11 +49,11 @@ public class CancelMatchUseCaseTests {
 
     scheduleDay = new ScheduleDay("day-1", LocalDate.parse("2024-01-01"));
 
-    sktVsFnatic = new Match("skt-fnatic", skt, fnatic);
-    scheduleDay.schedule(Moment.MORNING, sktVsFnatic);
+    scheduleDay.schedule(Moment.MORNING, skt, fnatic);
+    scheduleDay.schedule(Moment.AFTERNOON, damwon, g2);
 
-    damwonVsG2 = new Match("damwon-g2", damwon, g2);
-    scheduleDay.schedule(Moment.AFTERNOON, damwonVsG2);
+    sktVsFnatic = scheduleDay.getMatch(Moment.MORNING).get();
+    damwonVsG2 = scheduleDay.getMatch(Moment.AFTERNOON).get();
 
     scheduleDayRepository.save(scheduleDay);
   }
@@ -78,11 +77,12 @@ public class CancelMatchUseCaseTests {
 
   @Nested
   class Scenario_HappyPath {
-    CancelMatchInput input = new CancelMatchInput("damwon-g2");
 
 
     @Test
     void shouldCancelTheMatch() {
+      CancelMatchInput input = new CancelMatchInput(damwonVsG2.getId());
+
       var useCase = createUseCase();
       useCase.execute(input);
 
@@ -93,16 +93,16 @@ public class CancelMatchUseCaseTests {
 
   @Nested
   class Scenario_NoMatchesRemainingInScheduleDay {
-    CancelMatchInput input = new CancelMatchInput("damwon-g2");
-
     @BeforeEach
     void setUp() {
-      scheduleDay.cancel("skt-fnatic");
+      scheduleDay.cancel(sktVsFnatic.getId());
       scheduleDayRepository.save(scheduleDay);
     }
 
     @Test
     void shouldCancelTheMatch() {
+      CancelMatchInput input = new CancelMatchInput(damwonVsG2.getId());
+
       var useCase = createUseCase();
       useCase.execute(input);
 

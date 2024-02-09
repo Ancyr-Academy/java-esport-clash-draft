@@ -105,7 +105,7 @@ public class OrganizeMatchE2ETests {
     var response = objectMapper.readValue(result, IdResponse.class);
 
     var schedule = scheduleDayRepository.findById(response.getId()).orElseThrow();
-    assertEquals(dto.getDate(), schedule.getDate());
+    assertEquals(dto.getDate(), schedule.getDay());
 
     var match = schedule.getMatch(Moment.MORNING).orElseThrow();
 

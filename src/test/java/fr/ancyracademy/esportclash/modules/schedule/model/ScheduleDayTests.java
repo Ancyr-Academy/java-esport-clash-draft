@@ -56,25 +56,30 @@ public class ScheduleDayTests {
 
   @Test
   public void whenSchedulingAMatch_shouldBeScheduled() {
-    var scheduleDay = new ScheduleDay("id", LocalDate.now());
-    var match = new Match("id", createFNC(), createSKT());
+    var fnc = createFNC();
+    var skt = createSKT();
 
-    scheduleDay.schedule(Moment.MORNING, match);
+    var scheduleDay = new ScheduleDay("id", LocalDate.now());
+
+    scheduleDay.schedule(Moment.MORNING, fnc, skt);
 
     var morningMatch = scheduleDay.getMatch(Moment.MORNING).get();
-    assertEquals(match, morningMatch);
+    assertEquals(morningMatch.getFirst().getId(), fnc.getId());
+    assertEquals(morningMatch.getSecond().getId(), skt.getId());
   }
 
   @Test
   public void whenReschedulingAtAnotherMoment_shouldThrow() {
-    var scheduleDay = new ScheduleDay("id", LocalDate.now());
-    var match = new Match("id", createFNC(), createSKT());
+    var fnc = createFNC();
+    var skt = createSKT();
 
-    scheduleDay.schedule(Moment.MORNING, match);
+    var scheduleDay = new ScheduleDay("id", LocalDate.now());
+
+    scheduleDay.schedule(Moment.MORNING, fnc, skt);
 
     var exception = assertThrows(
         IllegalStateException.class,
-        () -> scheduleDay.schedule(Moment.AFTERNOON, match)
+        () -> scheduleDay.schedule(Moment.AFTERNOON, fnc, skt)
     );
 
     assertEquals("Team Fnatic is already playing that day", exception.getMessage());
@@ -82,15 +87,17 @@ public class ScheduleDayTests {
 
   @Test
   public void whenFirstTeamAlreadyPlaysThatDay_shouldThrow() {
-    var scheduleDay = new ScheduleDay("id", LocalDate.now());
-    var morningMatch = new Match("id", createFNC(), createSKT());
-    var afternoonMatch = new Match("id", createSKT(), createDamwon());
+    var fnc = createFNC();
+    var skt = createSKT();
+    var damwon = createDamwon();
 
-    scheduleDay.schedule(Moment.MORNING, morningMatch);
+    var scheduleDay = new ScheduleDay("id", LocalDate.now());
+
+    scheduleDay.schedule(Moment.MORNING, fnc, skt);
 
     var exception = assertThrows(
         IllegalStateException.class,
-        () -> scheduleDay.schedule(Moment.AFTERNOON, afternoonMatch)
+        () -> scheduleDay.schedule(Moment.AFTERNOON, skt, damwon)
     );
 
     assertEquals(
@@ -101,15 +108,17 @@ public class ScheduleDayTests {
 
   @Test
   public void whenSecondTeamAlreadyPlaysThatDay_shouldThrow() {
-    var scheduleDay = new ScheduleDay("id", LocalDate.now());
-    var morningMatch = new Match("id", createFNC(), createSKT());
-    var afternoonMatch = new Match("id", createDamwon(), createSKT());
+    var fnc = createFNC();
+    var skt = createSKT();
+    var damwon = createDamwon();
 
-    scheduleDay.schedule(Moment.MORNING, morningMatch);
+    var scheduleDay = new ScheduleDay("id", LocalDate.now());
+
+    scheduleDay.schedule(Moment.MORNING, fnc, skt);
 
     var exception = assertThrows(
         IllegalStateException.class,
-        () -> scheduleDay.schedule(Moment.AFTERNOON, afternoonMatch)
+        () -> scheduleDay.schedule(Moment.AFTERNOON, damwon, skt)
     );
 
     assertEquals(
@@ -118,22 +127,15 @@ public class ScheduleDayTests {
     );
   }
 
-  @Test
-  public void whenAddingMatch_shouldContainMatch() {
-    var scheduleDay = new ScheduleDay("id", LocalDate.now());
-    var morningMatch = new Match("morning-match", createFNC(), createSKT());
-
-    scheduleDay.schedule(Moment.MORNING, morningMatch);
-
-    assertTrue(scheduleDay.containsMatch("morning-match"));
-  }
 
   @Test
   public void whenCancelingScheduledMatch_shouldCancel() {
-    var scheduleDay = new ScheduleDay("id", LocalDate.now());
-    var morningMatch = new Match("morning-match", createFNC(), createSKT());
+    var fnc = createFNC();
+    var skt = createSKT();
 
-    scheduleDay.schedule(Moment.MORNING, morningMatch);
+    var scheduleDay = new ScheduleDay("id", LocalDate.now());
+
+    scheduleDay.schedule(Moment.MORNING, fnc, skt);
     scheduleDay.cancel("morning-match");
 
     assertFalse(scheduleDay.containsMatch("morning-match"));
@@ -147,10 +149,12 @@ public class ScheduleDayTests {
 
   @Test
   public void whenScheduleIsNotEmpty_shouldReturnFalse() {
-    var scheduleDay = new ScheduleDay("id", LocalDate.now());
-    var morningMatch = new Match("morning-match", createFNC(), createSKT());
+    var fnc = createFNC();
+    var skt = createSKT();
 
-    scheduleDay.schedule(Moment.MORNING, morningMatch);
+    var scheduleDay = new ScheduleDay("id", LocalDate.now());
+
+    scheduleDay.schedule(Moment.MORNING, fnc, skt);
 
     assertFalse(scheduleDay.isEmpty());
   }

@@ -4,7 +4,6 @@ import fr.ancyracademy.esportclash.PostgreSQLDbConfiguration;
 import fr.ancyracademy.esportclash.modules.player.model.Player;
 import fr.ancyracademy.esportclash.modules.player.model.Role;
 import fr.ancyracademy.esportclash.modules.player.ports.PlayerRepository;
-import fr.ancyracademy.esportclash.modules.schedule.model.Match;
 import fr.ancyracademy.esportclash.modules.schedule.model.Moment;
 import fr.ancyracademy.esportclash.modules.schedule.model.ScheduleDay;
 import fr.ancyracademy.esportclash.modules.schedule.ports.ScheduleDayRepository;
@@ -20,7 +19,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @Import(PostgreSQLDbConfiguration.class)
@@ -87,21 +85,18 @@ public class SQLScheduleDayRepositoryTests {
 
     var scheduleDay = new ScheduleDay("schedule-day", LocalDate.parse("2024-01-01"));
 
-    var match = new Match("match-1", fnatic, skt);
-    scheduleDay.schedule(Moment.MORNING, match);
+    scheduleDay.schedule(Moment.MORNING, fnatic, skt);
 
     repository.save(scheduleDay);
 
     var savedScheduleDay = repository.findById(scheduleDay.getId()).orElseThrow();
 
     assertEquals(scheduleDay.getId(), savedScheduleDay.getId());
-    assertEquals(scheduleDay.getDate(), savedScheduleDay.getDate());
+    assertEquals(scheduleDay.getDay(), savedScheduleDay.getDay());
     assertEquals(scheduleDay.getMatches().size(), savedScheduleDay.getMatches().size());
-    assertTrue(savedScheduleDay.containsMatch(match.getId()));
 
     var savedMatch = savedScheduleDay.getMatch(Moment.MORNING).orElseThrow();
-    assertEquals(match.getId(), savedMatch.getId());
-    assertEquals(match.getFirst().getId(), savedMatch.getFirst().getId());
-    assertEquals(match.getSecond().getId(), savedMatch.getSecond().getId());
+    assertEquals(fnatic.getId(), savedMatch.getFirst().getId());
+    assertEquals(skt.getId(), savedMatch.getSecond().getId());
   }
 }

@@ -39,18 +39,18 @@ public class MatchTests {
 
   @Test
   public void whenFirstTeamIsNull_shouldThrow() {
-    assertThrows(IllegalArgumentException.class, () -> new Match("id", null, createFNC()));
+    assertThrows(IllegalArgumentException.class, () -> new Match("id", "id", null, createFNC()));
   }
 
   @Test
   public void whenSecondTeamIsNull_shouldThrow() {
-    assertThrows(IllegalArgumentException.class, () -> new Match("id", createSKT(), null));
+    assertThrows(IllegalArgumentException.class, () -> new Match("id", "id", createSKT(), null));
   }
 
   @Test
   public void whenOpposingSameTeam_shouldThrow() {
     var skt = createSKT();
-    assertThrows(IllegalStateException.class, () -> new Match("id", skt, skt));
+    assertThrows(IllegalStateException.class, () -> new Match("id", "id", skt, skt));
   }
 
   @Test
@@ -59,7 +59,7 @@ public class MatchTests {
     var fnc = createFNC();
     skt.leave("skt-supp");
 
-    assertThrows(IllegalStateException.class, () -> new Match("id", skt, fnc));
+    assertThrows(IllegalStateException.class, () -> new Match("id", "id", skt, fnc));
   }
 
   @Test
@@ -68,6 +68,6 @@ public class MatchTests {
     var fnc = createFNC();
     fnc.leave("fnc-supp");
 
-    assertThrows(IllegalStateException.class, () -> new Match("id", skt, fnc));
+    assertThrows(IllegalStateException.class, () -> new Match("id", "id", skt, fnc));
   }
 }

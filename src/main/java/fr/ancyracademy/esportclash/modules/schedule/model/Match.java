@@ -1,15 +1,44 @@
 package fr.ancyracademy.esportclash.modules.schedule.model;
 
 import fr.ancyracademy.esportclash.modules.team.model.Team;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 
+@Entity
+@Table(name = "matches")
 public class Match {
-  private final Team first;
-  private final Team second;
+  @Id
   private String id;
 
-  public Match(String id, Team first, Team second) {
+  @Column(name = "first_id")
+  private String firstId;
+
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "first_id")
+  @MapsId("firstId")
+  private Team first;
+
+  @Column(name = "second_id")
+  private String secondId;
+
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "second_id")
+  @MapsId("secondId")
+  private Team second;
+
+  @Column(name = "schedule_day_id")
+  private String scheduleDayId;
+
+  @ManyToOne()
+  @JoinColumn(name = "schedule_day_id")
+  @MapsId("scheduleDayId")
+  private ScheduleDay scheduleDay;
+
+  public Match() {
+  }
+
+  public Match(String id, String scheduleDayId, Team first, Team second) {
     // Match implements the AlwaysValid pattern
     if (first == null || second == null) {
       throw new IllegalArgumentException("Teams must be provided");
@@ -24,22 +53,13 @@ public class Match {
     }
 
     this.id = id;
+    this.scheduleDayId = scheduleDayId;
     this.first = first;
+    this.firstId = first.getId();
     this.second = second;
+    this.secondId = second.getId();
   }
 
-  public Match(Match other) {
-    this.id = other.id;
-    this.first = new Team(other.first);
-    this.second = new Team(other.second);
-  }
-
-  /**
-   * Check if the team plays in this match
-   *
-   * @param team
-   * @return
-   */
   public boolean includesTeam(Team team) {
     return first.getId().equals(team.getId()) || second.getId().equals(team.getId());
   }
@@ -48,8 +68,16 @@ public class Match {
     return first;
   }
 
+  public String getFirstId() {
+    return firstId;
+  }
+
   public Team getSecond() {
     return second;
+  }
+
+  public String getSecondId() {
+    return secondId;
   }
 
   public String getId() {
