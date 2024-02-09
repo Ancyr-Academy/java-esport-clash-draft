@@ -1,7 +1,7 @@
 package fr.ancyracademy.esportclash.modules.schedule.model;
 
 import fr.ancyracademy.esportclash.modules.team.model.Team;
-import fr.ancyracademy.esportclash.shared.Entity;
+import fr.ancyracademy.esportclash.shared.BaseEntity;
 import org.antlr.v4.runtime.misc.Pair;
 
 import java.time.LocalDate;
@@ -10,21 +10,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class ScheduleDay extends Entity {
+
+public class ScheduleDay extends BaseEntity {
   private final String id;
+
   private final LocalDate date;
-  private final Schedule schedule;
+
+  private final HashMap<Moment, Match> matches;
 
   public ScheduleDay(String id, LocalDate date) {
     this.id = id;
     this.date = date;
-    this.schedule = new Schedule();
+    this.matches = new HashMap<>();
   }
 
   public ScheduleDay(ScheduleDay other) {
     this.id = other.id;
     this.date = other.date;
-    this.schedule = new Schedule(other.schedule);
+    this.matches = new HashMap<>(other.matches);
   }
 
   /**
@@ -34,30 +37,33 @@ public class ScheduleDay extends Entity {
    * @param match
    */
   public void schedule(Moment moment, Match match) {
-
-
     // A team can only play once per day
-    if (schedule.teamPlays(match.getFirst())) {
+    if (teamPlays(match.getFirst())) {
       throw new IllegalStateException(
           "Team " + match.getFirst().getName() + " is already playing that day"
       );
     }
 
-    if (schedule.teamPlays(match.getSecond())) {
+    if (teamPlays(match.getSecond())) {
       throw new IllegalStateException(
           "Team " + match.getSecond().getName() + " is already playing that day"
       );
     }
 
-    schedule.put(moment, match);
+    matches.put(moment, match);
   }
 
   public void cancel(String matchId) {
-    schedule.remove(matchId);
+    var match = findMatch(matchId);
+    if (match.isEmpty()) {
+      return;
+    }
+
+    matches.remove(match.get().a);
   }
 
   public Optional<Match> getMatch(Moment moment) {
-    return Optional.of(schedule.get(moment));
+    return Optional.of(matches.get(moment));
   }
 
   public LocalDate getDate() {
@@ -69,80 +75,29 @@ public class ScheduleDay extends Entity {
   }
 
   public boolean containsMatch(String matchId) {
-    return schedule.findMatch(matchId).isPresent();
+    return findMatch(matchId).isPresent();
+  }
+
+  public Optional<Pair<Moment, Match>> findMatch(String matchId) {
+    return matches.keySet().stream()
+        .filter(m -> matches.get(m).getId().equals(matchId))
+        .findFirst()
+        .map(m -> new Pair<>(m, matches.get(m)));
+  }
+
+  public Optional<Pair<Moment, Match>> findMatch(Match match) {
+    return findMatch(match.getId());
   }
 
   public boolean isEmpty() {
-    return schedule.isEmpty();
+    return matches.isEmpty();
   }
 
   public List<Map.Entry<Moment, Match>> getMatches() {
-    return schedule.getMatches();
+    return List.copyOf(matches.entrySet());
   }
 
-  /**
-   * Represents the schedule of a day
-   */
-  public static class Schedule {
-    private final HashMap<Moment, Match> matches;
-
-    public Schedule() {
-      this.matches = new HashMap<>();
-    }
-
-    public Schedule(Schedule other) {
-      this.matches = new HashMap<>();
-
-      for (var moment : other.matches.keySet()) {
-        this.matches.put(moment, new Match(other.matches.get(moment)));
-      }
-    }
-
-    /**
-     * Check if a team is already playing that day
-     *
-     * @param team
-     * @return
-     */
-    public boolean teamPlays(Team team) {
-      return matches.values().stream().anyMatch(m -> m.includesTeam(team));
-    }
-
-    /**
-     * Find a match in the schedule
-     *
-     * @param matchId
-     * @return
-     */
-    public Optional<Pair<Moment, Match>> findMatch(String matchId) {
-      return matches.keySet().stream()
-          .filter(m -> matches.get(m).getId().equals(matchId))
-          .findFirst()
-          .map(m -> new Pair<>(m, matches.get(m)));
-    }
-
-    public Optional<Pair<Moment, Match>> findMatch(Match match) {
-      return findMatch(match.getId());
-    }
-
-    public Match get(Moment moment) {
-      return matches.get(moment);
-    }
-
-    public void put(Moment moment, Match match) {
-      matches.put(moment, match);
-    }
-
-    public void remove(String matchId) {
-      matches.values().removeIf(m -> m.getId().equals(matchId));
-    }
-
-    public boolean isEmpty() {
-      return matches.isEmpty();
-    }
-
-    public List<Map.Entry<Moment, Match>> getMatches() {
-      return List.copyOf(matches.entrySet());
-    }
+  private boolean teamPlays(Team team) {
+    return matches.values().stream().anyMatch(m -> m.includesTeam(team));
   }
 }
