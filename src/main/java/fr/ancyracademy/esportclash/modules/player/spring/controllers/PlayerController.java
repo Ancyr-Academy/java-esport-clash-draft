@@ -1,9 +1,12 @@
 package fr.ancyracademy.esportclash.modules.player.spring.controllers;
 
+import an.awesome.pipelinr.Pipeline;
+import fr.ancyracademy.esportclash.modules.player.commands.ChangePlayerMainRoleCommand;
+import fr.ancyracademy.esportclash.modules.player.commands.CreatePlayerCommand;
 import fr.ancyracademy.esportclash.modules.player.model.Role;
+import fr.ancyracademy.esportclash.modules.player.queries.GetPlayerByIdQuery;
 import fr.ancyracademy.esportclash.modules.player.spring.dto.ChangePlayerMainRoleDTO;
 import fr.ancyracademy.esportclash.modules.player.spring.dto.CreatePlayerDTO;
-import fr.ancyracademy.esportclash.modules.player.usecases.*;
 import fr.ancyracademy.esportclash.modules.player.viewmodel.PlayerViewModel;
 import fr.ancyracademy.esportclash.shared.IdResponse;
 import jakarta.validation.Valid;
@@ -16,20 +19,13 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/players")
 public class PlayerController {
-  private final GetPlayerByIdUseCase getPlayerByIdUseCase;
-
-  private final CreatePlayerUseCase createPlayerUseCase;
-  private final ChangePlayerMainRoleUseCase changePlayerMainRoleUseCase;
+  private final Pipeline pipeline;
 
   @Autowired
   public PlayerController(
-      GetPlayerByIdUseCase getPlayerByIdUseCase,
-      CreatePlayerUseCase createPlayerUseCase,
-      ChangePlayerMainRoleUseCase changePlayerMainRoleUseCase
+      Pipeline pipeline
   ) {
-    this.getPlayerByIdUseCase = getPlayerByIdUseCase;
-    this.createPlayerUseCase = createPlayerUseCase;
-    this.changePlayerMainRoleUseCase = changePlayerMainRoleUseCase;
+    this.pipeline = pipeline;
   }
 
 
@@ -37,22 +33,20 @@ public class PlayerController {
   public ResponseEntity<PlayerViewModel> getPlayer(
       @PathVariable("id") String id
   ) {
-    var response = getPlayerByIdUseCase.execute(new GetPlayerByIdInput(id));
+    var response = this.pipeline.send(new GetPlayerByIdQuery(id));
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
   @PostMapping
   public ResponseEntity<IdResponse> createPlayer(@Valid @RequestBody CreatePlayerDTO input) {
-    var response = createPlayerUseCase.execute(new CreatePlayerInput(input.getName(), Role.fromString(input.getMainRole())));
+    var response = this.pipeline.send(new CreatePlayerCommand(input.getName(), Role.fromString(input.getMainRole())));
     return new ResponseEntity<>(new IdResponse(response.getId()), HttpStatus.CREATED);
   }
 
   @Transactional()
   @PatchMapping("/{id}/main-role")
   public ResponseEntity<Void> changePlayerMainRole(@Valid @RequestBody ChangePlayerMainRoleDTO input, @PathVariable("id") String id) {
-
-
-    changePlayerMainRoleUseCase.execute(new ChangePlayerMainRoleInput(id, Role.fromString(input.getMainRole())));
+    this.pipeline.send(new ChangePlayerMainRoleCommand(id, Role.fromString(input.getMainRole())));
     return new ResponseEntity<>(null, HttpStatus.OK);
   }
 }

@@ -1,8 +1,12 @@
 package fr.ancyracademy.esportclash.modules.team.spring.configuration;
 
 import fr.ancyracademy.esportclash.modules.player.ports.PlayerRepository;
+import fr.ancyracademy.esportclash.modules.team.commands.AddPlayerToTeamCommandHandler;
+import fr.ancyracademy.esportclash.modules.team.commands.CreateTeamCommandHandler;
+import fr.ancyracademy.esportclash.modules.team.commands.DeleteTeamCommandHandler;
+import fr.ancyracademy.esportclash.modules.team.commands.RemovePlayerFromTeamCommandHandler;
 import fr.ancyracademy.esportclash.modules.team.ports.TeamRepository;
-import fr.ancyracademy.esportclash.modules.team.usecases.*;
+import fr.ancyracademy.esportclash.modules.team.queries.GetTeamByIdQueryHandler;
 import fr.ancyracademy.esportclash.shared.id.IdProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,53 +14,53 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class TeamUseCasesConfiguration {
   @Bean
-  public CreateTeamUseCase createTeamUseCase(
+  public CreateTeamCommandHandler createTeamUseCase(
       TeamRepository teamRepository,
       IdProvider idProvider
   ) {
-    return new CreateTeamUseCase(
+    return new CreateTeamCommandHandler(
         teamRepository,
         idProvider
     );
   }
 
   @Bean
-  public DeleteTeamUseCase deleteTeamUseCase(
+  public DeleteTeamCommandHandler deleteTeamUseCase(
       TeamRepository teamRepository
   ) {
-    return new DeleteTeamUseCase(
+    return new DeleteTeamCommandHandler(
         teamRepository
     );
   }
 
   @Bean
-  public AddPlayerToTeamUseCase addPlayerToTeamUseCase(
+  public AddPlayerToTeamCommandHandler addPlayerToTeamUseCase(
       PlayerRepository playerRepository,
       TeamRepository teamRepository
   ) {
-    return new AddPlayerToTeamUseCase(
+    return new AddPlayerToTeamCommandHandler(
         playerRepository,
         teamRepository
     );
   }
 
   @Bean
-  public RemovePlayerFromTeamUseCase removePlayerFromTeamUseCase(
+  public RemovePlayerFromTeamCommandHandler removePlayerFromTeamUseCase(
       PlayerRepository playerRepository,
       TeamRepository teamRepository
   ) {
-    return new RemovePlayerFromTeamUseCase(
+    return new RemovePlayerFromTeamCommandHandler(
         playerRepository,
         teamRepository
     );
   }
 
   @Bean
-  public GetTeamByIdUseCase getTeamByIdUseCase(
+  public GetTeamByIdQueryHandler getTeamByIdUseCase(
       TeamRepository teamRepository,
       PlayerRepository playerRepository
   ) {
-    return new GetTeamByIdUseCase(
+    return new GetTeamByIdQueryHandler(
         teamRepository,
         playerRepository
     );

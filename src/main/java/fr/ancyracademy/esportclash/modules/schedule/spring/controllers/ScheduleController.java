@@ -1,10 +1,9 @@
 package fr.ancyracademy.esportclash.modules.schedule.spring.controllers;
 
+import an.awesome.pipelinr.Pipeline;
+import fr.ancyracademy.esportclash.modules.schedule.commands.CancelMatchCommand;
+import fr.ancyracademy.esportclash.modules.schedule.commands.OrganizeMatchCommand;
 import fr.ancyracademy.esportclash.modules.schedule.spring.dto.OrganizeMatchDTO;
-import fr.ancyracademy.esportclash.modules.schedule.usecases.CancelMatchInput;
-import fr.ancyracademy.esportclash.modules.schedule.usecases.CancelMatchUseCase;
-import fr.ancyracademy.esportclash.modules.schedule.usecases.OrganizeMatchInput;
-import fr.ancyracademy.esportclash.modules.schedule.usecases.OrganizeMatchUseCase;
 import fr.ancyracademy.esportclash.shared.IdResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -13,24 +12,21 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ScheduleController {
-  private final OrganizeMatchUseCase organizeMatchUseCase;
-
-  private final CancelMatchUseCase cancelMatchUseCase;
+  private final Pipeline pipeline;
 
   public ScheduleController(
-      OrganizeMatchUseCase organizeMatchUseCase,
-      CancelMatchUseCase cancelMatchUseCase
+      Pipeline pipeline
   ) {
-    this.organizeMatchUseCase = organizeMatchUseCase;
-    this.cancelMatchUseCase = cancelMatchUseCase;
+    this.pipeline = pipeline;
   }
+
 
   @PostMapping("schedule/organize")
   public ResponseEntity<IdResponse> organizeMatch(
       @Valid @RequestBody OrganizeMatchDTO dto
   ) {
-    var result = organizeMatchUseCase.execute(
-        new OrganizeMatchInput(
+    var result = pipeline.send(
+        new OrganizeMatchCommand(
             dto.getDate(),
             dto.getFirstTeamId(),
             dto.getSecondTeamId(),
@@ -45,10 +41,10 @@ public class ScheduleController {
   public ResponseEntity<Void> cancelMatch(
       @PathVariable("id") String id
   ) {
-    cancelMatchUseCase.execute(
-        new CancelMatchInput(id)
+    pipeline.send(
+        new CancelMatchCommand(id)
     );
-    
+
     return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
   }
 }

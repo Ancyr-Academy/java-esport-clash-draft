@@ -1,9 +1,9 @@
 package fr.ancyracademy.esportclash.modules.player.spring.configuration;
 
+import fr.ancyracademy.esportclash.modules.player.commands.ChangePlayerMainRoleCommandHandler;
+import fr.ancyracademy.esportclash.modules.player.commands.CreatePlayerCommandHandler;
 import fr.ancyracademy.esportclash.modules.player.ports.PlayerRepository;
-import fr.ancyracademy.esportclash.modules.player.usecases.ChangePlayerMainRoleUseCase;
-import fr.ancyracademy.esportclash.modules.player.usecases.CreatePlayerUseCase;
-import fr.ancyracademy.esportclash.modules.player.usecases.GetPlayerByIdUseCase;
+import fr.ancyracademy.esportclash.modules.player.queries.GetPlayerByIdQueryHandler;
 import fr.ancyracademy.esportclash.shared.id.IdProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,30 +12,30 @@ import org.springframework.context.annotation.Configuration;
 public class PlayerUseCasesConfiguration {
 
   @Bean
-  public CreatePlayerUseCase createPlayerUseCase(
+  public CreatePlayerCommandHandler createPlayerUseCase(
       IdProvider idProvider,
       PlayerRepository playerRepository
   ) {
-    return new CreatePlayerUseCase(
+    return new CreatePlayerCommandHandler(
         idProvider,
         playerRepository
     );
   }
 
   @Bean
-  public ChangePlayerMainRoleUseCase changePlayerMainRoleUseCase(
+  public ChangePlayerMainRoleCommandHandler changePlayerMainRoleUseCase(
       PlayerRepository playerRepository
   ) {
-    return new ChangePlayerMainRoleUseCase(
+    return new ChangePlayerMainRoleCommandHandler(
         playerRepository
     );
   }
 
   @Bean
-  public GetPlayerByIdUseCase getPlayerByIdUseCase(
+  public GetPlayerByIdQueryHandler getPlayerByIdUseCase(
       PlayerRepository playerRepository
   ) {
-    return new GetPlayerByIdUseCase(
+    return new GetPlayerByIdQueryHandler(
         playerRepository
     );
   }

@@ -1,9 +1,14 @@
 package fr.ancyracademy.esportclash.modules.team.spring.controllers;
 
+import an.awesome.pipelinr.Pipeline;
 import fr.ancyracademy.esportclash.modules.player.model.Role;
+import fr.ancyracademy.esportclash.modules.team.commands.AddPlayerToTeamCommand;
+import fr.ancyracademy.esportclash.modules.team.commands.CreateTeamCommand;
+import fr.ancyracademy.esportclash.modules.team.commands.DeleteTeamCommand;
+import fr.ancyracademy.esportclash.modules.team.commands.RemovePlayerFromTeamCommand;
+import fr.ancyracademy.esportclash.modules.team.queries.GetTeamByIdQuery;
 import fr.ancyracademy.esportclash.modules.team.spring.dto.AddPlayerToTeamDTO;
 import fr.ancyracademy.esportclash.modules.team.spring.dto.CreateTeamDTO;
-import fr.ancyracademy.esportclash.modules.team.usecases.*;
 import fr.ancyracademy.esportclash.modules.team.viewmodel.TeamViewModel;
 import fr.ancyracademy.esportclash.shared.IdResponse;
 import jakarta.validation.Valid;
@@ -14,35 +19,17 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/teams")
 public class TeamController {
-  private final CreateTeamUseCase createTeamUseCase;
+  private final Pipeline pipeline;
 
-  private final DeleteTeamUseCase deleteTeamUseCase;
-
-  private final AddPlayerToTeamUseCase addPlayerToTeamUseCase;
-
-  private final RemovePlayerFromTeamUseCase removePlayerFromTeamUseCase;
-
-  private final GetTeamByIdUseCase getTeamByIdUseCase;
-
-  public TeamController(
-      CreateTeamUseCase createTeamUseCase,
-      DeleteTeamUseCase deleteTeamUseCase,
-      AddPlayerToTeamUseCase addPlayerToTeamUseCase,
-      RemovePlayerFromTeamUseCase removePlayerFromTeamUseCase,
-      GetTeamByIdUseCase getTeamByIdUseCase
-  ) {
-    this.createTeamUseCase = createTeamUseCase;
-    this.deleteTeamUseCase = deleteTeamUseCase;
-    this.addPlayerToTeamUseCase = addPlayerToTeamUseCase;
-    this.removePlayerFromTeamUseCase = removePlayerFromTeamUseCase;
-    this.getTeamByIdUseCase = getTeamByIdUseCase;
+  public TeamController(Pipeline pipeline) {
+    this.pipeline = pipeline;
   }
 
   @PostMapping
   public ResponseEntity<IdResponse> createTeam(
       @Valid @RequestBody CreateTeamDTO dto
   ) {
-    var response = createTeamUseCase.execute(new CreateTeamInput(dto.getName()));
+    var response = pipeline.send(new CreateTeamCommand(dto.getName()));
     return new ResponseEntity<>(new IdResponse(response.getId()), HttpStatus.CREATED);
   }
 
@@ -50,7 +37,7 @@ public class TeamController {
   public ResponseEntity<Void> createTeam(
       @PathVariable("id") String id
   ) {
-    deleteTeamUseCase.execute(new DeleteTeamInput(id));
+    pipeline.send(new DeleteTeamCommand(id));
     return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
   }
 
@@ -59,8 +46,8 @@ public class TeamController {
       @Valid @RequestBody AddPlayerToTeamDTO dto,
       @PathVariable("id") String teamId
   ) {
-    addPlayerToTeamUseCase.execute(
-        new AddPlayerToTeamInput(
+    pipeline.send(
+        new AddPlayerToTeamCommand(
             teamId,
             dto.getPlayerId(),
             Role.fromString(dto.getRole())
@@ -74,8 +61,8 @@ public class TeamController {
   public ResponseEntity<Void> removePlayerFromTeam(
       @PathVariable("playerId") String playerId
   ) {
-    removePlayerFromTeamUseCase.execute(
-        new RemovePlayerFromTeamInput(
+    pipeline.send(
+        new RemovePlayerFromTeamCommand(
             playerId
         )
     );
@@ -87,7 +74,7 @@ public class TeamController {
   public ResponseEntity<TeamViewModel> getTeamById(
       @PathVariable("id") String id
   ) {
-    var team = getTeamByIdUseCase.execute(new GetTeamByIdInput(id));
+    var team = pipeline.send(new GetTeamByIdQuery(id));
     return new ResponseEntity<>(team, HttpStatus.OK);
   }
 }
