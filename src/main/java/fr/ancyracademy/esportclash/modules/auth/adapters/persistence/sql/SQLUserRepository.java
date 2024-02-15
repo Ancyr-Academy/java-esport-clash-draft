@@ -1,4 +1,4 @@
-package fr.ancyracademy.esportclash.modules.auth.adapters.sql;
+package fr.ancyracademy.esportclash.modules.auth.adapters.persistence.sql;
 
 import fr.ancyracademy.esportclash.modules.auth.model.User;
 import fr.ancyracademy.esportclash.modules.auth.ports.UserRepository;

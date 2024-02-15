@@ -1,6 +1,6 @@
 package fr.ancyracademy.esportclash.modules.auth.services.jwtservice;
 
-import fr.ancyracademy.esportclash.modules.auth.model.JwtUser;
+import fr.ancyracademy.esportclash.modules.auth.model.AuthUser;
 import fr.ancyracademy.esportclash.modules.auth.model.User;
 import fr.ancyracademy.esportclash.shared.date.DateProvider;
 import io.jsonwebtoken.JwtParser;
@@ -44,12 +44,12 @@ public class ConcreteJwtService implements JwtService {
   }
 
   @Override
-  public JwtUser parse(String token) {
+  public AuthUser parse(String token) {
     var claims = jwtParser.parseSignedClaims(token).getPayload();
 
     var id = claims.getSubject();
     var emailAddress = claims.get("emailAddress", String.class);
 
-    return new JwtUser(id, emailAddress);
+    return new AuthUser(id, emailAddress);
   }
 }

@@ -21,7 +21,7 @@ public class LoginCommandHandler implements Command.Handler<LoginCommand, Logged
   @Override
   public LoggedInUserViewModel handle(LoginCommand command) {
     var user = userRepository
-        .findByEmailAddress(command.getEmailAdress())
+        .findByEmailAddress(command.getEmailAddress())
         .orElseThrow(
             () -> new NotFoundException("User not found")
         );

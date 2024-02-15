@@ -1,10 +1,10 @@
 package fr.ancyracademy.esportclash.modules.auth.model;
 
-public class JwtUser {
+public class AuthUser {
   private final String id;
   private final String emailAdress;
 
-  public JwtUser(String id, String emailAdress) {
+  public AuthUser(String id, String emailAdress) {
     this.id = id;
     this.emailAdress = emailAdress;
   }

@@ -23,7 +23,7 @@ public class RegisterCommandHandler implements Command.Handler<RegisterCommand, 
     var encoded = passwordEncoder.hash(command.getPassword());
     var user = new User(
         idProvider.generate(),
-        command.getEmailAdress(),
+        command.getEmailAddress(),
         encoded);
 
     userRepository.save(user);
